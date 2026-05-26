@@ -1,0 +1,306 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh; /* Permite que o body cresça se o conteúdo precisar de espaço */
+    background: #050505;
+    /* overflow: hidden removido para evitar que o conteúdo suma em telas pequenas ou com muito zoom */
+}
+
+/* ---------- LAYOUT ---------- */
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* ---------- ESQUERDA ---------- */
+.left-side {
+    width: 52%;
+    position: relative;
+    background: url('../../img/fundo-oficina.jpg') center/cover no-repeat;
+    padding: clamp(20px, 3rem, 50px); /* Trocado vw por rem para estabilizar em telas gigantes */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+}
+
+.logo-box {
+    z-index: 2;
+}
+
+    .logo-box h1 {
+        color: white;
+        font-size: clamp(2.5rem, 4rem, 4.5rem); /* Reduzido o teto máximo para não virar um outdoor */
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .logo-box span {
+        color: #ff2222;
+    }
+
+    .logo-box p {
+        color: #ddd;
+        font-size: clamp(.8rem, 1.1rem, 1.3rem); /* Estabilizado com rem */
+        letter-spacing: 2px;
+        margin-top: 10px;
+    }
+
+.car-image {
+    width: min(85%, 600px); /* Reduzido levemente o limite para manter a elegância em telas grandes */
+    margin: auto;
+    z-index: 2;
+    object-fit: contain;
+}
+
+.features {
+    z-index: 2;
+    display: flex;
+    gap: 20px;
+    padding: clamp(15px, 2rem, 28px);
+    border-radius: 20px;
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(15px);
+}
+
+.feature {
+    flex: 1;
+    text-align: center;
+    color: white;
+}
+
+    .feature i {
+        color: #ff2222;
+        font-size: clamp(1.3rem, 1.8rem, 2rem);
+        margin-bottom: 10px;
+    }
+
+    .feature h4 {
+        font-size: clamp(.8rem, .95rem, 1rem);
+    }
+
+    .feature p {
+        color: #ccc;
+        font-size: clamp(.65rem, .75rem, .85rem);
+    }
+
+/* ---------- DIREITA ---------- */
+.right-side {
+    width: 48%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(20px, 3rem, 40px);
+    background: #080808;
+    overflow-y: auto; /* Caso o formulário fique maior que a tela vertical, ele rola internamente */
+}
+
+.login-card {
+    width: min(100%, 500px); /* Limitado a 500px para manter uma proporção perfeita de card */
+    padding: clamp(25px, 2.5rem, 45px);
+    border-radius: 25px;
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 0 40px rgba(0,0,0,.5);
+    margin: auto; /* Centraliza verticalmente se houver espaço livre */
+}
+
+.logo-mini {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    .logo-mini h2 {
+        color: white;
+        font-size: clamp(1.8rem, 2.3rem, 2.6rem);
+        font-weight: 800;
+    }
+
+    .logo-mini span {
+        color: #ff2222;
+    }
+
+    .logo-mini p {
+        color: #ccc;
+        font-size: clamp(.75rem, .85rem, .95rem);
+    }
+
+.login-card h1 {
+    text-align: center;
+    color: white;
+    font-size: clamp(1.6rem, 2rem, 2.4rem);
+}
+
+    .login-card h1 span {
+        color: #ff2222;
+    }
+
+.subtitle {
+    text-align: center;
+    color: #bbb;
+    margin: 10px 0 25px;
+    font-size: clamp(.8rem, .9rem, 1rem);
+}
+
+/* ---------- INPUTS ---------- */
+.input-group {
+    margin-bottom: 18px;
+}
+
+    .input-group label {
+        color: white;
+        font-size: clamp(.8rem, .9rem, 1rem);
+        display: block;
+        margin-bottom: 8px;
+    }
+
+.input-box {
+    height: 56px; /* Definido tamanho fixo equilibrado para inputs, evitando flutuações de vh */
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    border-radius: 14px;
+    background: #111;
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+    .input-box i {
+        color: #888;
+        margin-right: 12px;
+        font-size: 1rem;
+    }
+
+    .input-box input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: none;
+        color: white;
+        font-size: 1rem;
+    }
+
+.eye {
+    cursor: pointer;
+}
+
+/* ---------- CHECK ---------- */
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    margin: 18px 0;
+    font-size: clamp(.75rem, .85rem, .95rem);
+}
+
+/* ---------- CAPTCHA ---------- */
+.captcha-box {
+    padding: clamp(15px, 1.5rem, 25px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.captcha-title {
+    color: white;
+    font-weight: 600;
+    font-size: clamp(.9rem, 1rem, 1.1rem);
+}
+
+    .captcha-title i {
+        color: #ff2222;
+    }
+
+.captcha-box p {
+    color: #aaa;
+    margin: 10px 0 20px;
+    font-size: clamp(.75rem, .85rem, .9rem);
+}
+
+.captcha-real {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90px;
+    overflow: hidden;
+}
+
+/* ---------- BOTÃO ---------- */
+.btn-login {
+    width: 100%;
+    height: 58px; /* Altura fixa ideal para botões de ação */
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg,#ff1d1d,#d30000);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+    .btn-login:hover {
+        transform: scale(1.01);
+    }
+
+.forgot {
+    display: block;
+    margin-top: 22px;
+    text-align: center;
+    color: #ff2222;
+    text-decoration: none;
+    font-size: clamp(.8rem, .9rem, 1rem);
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 950px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-side {
+        display: none;
+    }
+
+    .right-side {
+        width: 100%;
+        min-height: 100vh;
+        padding: 20px 15px;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 450px;
+    }
+}
+
+/* ---------- SUPORTE PARA TELAS EXTREMAMENTE GRANDES (4K / Ultrawide) ---------- */
+@media (min-width: 2000px) {
+    .container {
+        max-width: 1920px; /* Impede que o layout estique infinitamente para os lados */
+        margin: 0 auto;
+        box-shadow: 0 0 100px rgba(0,0,0,0.8);
+    }
+
+    body {
+        background: #020202; /* Fundo ligeiramente diferente nas bordas externas em telas 4K */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
