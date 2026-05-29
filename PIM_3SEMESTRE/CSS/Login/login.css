@@ -267,6 +267,15 @@ html, body {
     font-size: clamp(.8rem, .9rem, 1rem);
 }
 
+[vw] {
+    z-index: 999999999 !important;
+    position: fixed !important;
+}
+
+[vw-access-button] {
+    z-index: 999999999 !important;
+}
+
 /* ---------- RESPONSIVO ---------- */
 @media (max-width: 950px) {
     .container {

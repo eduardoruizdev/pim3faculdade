@@ -659,7 +659,14 @@ body {
         box-shadow: 0 12px 24px rgba(255, 33, 71, 0.4);
         filter: brightness(1.1);
     }
+[vw] {
+    z-index: 999999999 !important;
+    position: fixed !important;
+}
 
+[vw-access-button] {
+    z-index: 999999999 !important;
+}
 /* DESIGN RESPONSIVO SEGURO */
 @media(max-width: 1400px) {
     .content-grid {

@@ -449,7 +449,14 @@ body {
 .page-active {
     background: linear-gradient(45deg,#ff0026,#ff4545) !important;
 }
+[vw] {
+    z-index: 999999999 !important;
+    position: fixed !important;
+}
 
+[vw-access-button] {
+    z-index: 999999999 !important;
+}
 /* RESPONSIVO */
 
 @media(max-width:1300px) {
