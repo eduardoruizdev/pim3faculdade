@@ -123,11 +123,13 @@
     <Content Include="CSS\Funcionario\cadastrarservico.css" />
     <Content Include="CSS\Funcionario\ordemservico.css" />
     <Content Include="CSS\Login\login.css" />
+    <Content Include="CSS\Mecanico\paginamecanico.css" />
     <Content Include="Pages\Cliente\historicocliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarcliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarservico.aspx" />
     <Content Include="Pages\Funcionario\ordemservico.aspx" />
     <Content Include="Pages\Login\login.aspx" />
+    <Content Include="Pages\Mecanico\paginamecanico.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +173,13 @@
     <Compile Include="Pages\Login\login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Mecanico\paginamecanico.aspx.cs">
+      <DependentUpon>paginamecanico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Mecanico\paginamecanico.aspx.designer.cs">
+      <DependentUpon>paginamecanico.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +194,6 @@
   <ItemGroup>
     <Folder Include="img\" />
     <Folder Include="Pages\Adm\" />
-    <Folder Include="Pages\Mecanico\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

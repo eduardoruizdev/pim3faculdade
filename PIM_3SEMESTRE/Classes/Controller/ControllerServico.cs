@@ -222,7 +222,7 @@ WHERE s.id_servico = @idServico
         }
 
 
-       
+
         public void AtualizarStatus(
             int idServico,
             string status)
@@ -501,8 +501,8 @@ WHERE s.id_servico = @idServico
 
 
 
-public MySqlDataReader ListarServicosCliente(
-    int idUsuario)
+        public MySqlDataReader ListarServicosCliente(
+            int idUsuario)
         {
             try
             {
@@ -569,6 +569,76 @@ ORDER BY s.id_servico DESC
             {
                 throw new Exception(
                     "Erro ao listar histórico do cliente. " +
+                    ex.Message);
+            }
+        }
+   
+    public MySqlDataReader ListarServicosMecanico(int idUsuario)
+        {
+            try
+            {
+                Banco bd = new Banco();
+
+                string sql = @"
+
+SELECT
+    s.id_servico,
+    s.nm_titulo_servico,
+    s.ds_servico_resumido,
+    s.dt_cadastro_servico,
+    s.dt_prevista_entrega_servico,
+    s.ds_prioridade_servico,
+    s.cd_placa_veiculo_servico,
+    s.nm_modelo_veiculo_servico,
+    s.cd_ano_veiculo_servico,
+    s.nm_cor_veiculo_servico,
+    s.qt_quilometragem_veiculo_servico,
+    s.vl_servico,
+    s.ds_servico,
+    s.st_servico,
+
+    c.id_cliente,
+
+    uc.nm_usuario AS nm_cliente,
+
+    um.nm_usuario AS nm_mecanico
+
+FROM servico s
+
+INNER JOIN cliente c
+    ON s.id_cliente = c.id_cliente
+
+INNER JOIN usuario uc
+    ON c.id_usuario = uc.id_usuario
+
+INNER JOIN mecanico m
+    ON s.id_mecanico = m.id_mecanico
+
+INNER JOIN usuario um
+    ON m.id_usuario = um.id_usuario
+
+WHERE um.id_usuario = @idUsuario
+
+ORDER BY s.id_servico DESC
+
+";
+
+                List<MySqlParameter> parametros =
+                    new List<MySqlParameter>();
+
+                parametros.Add(
+                    new MySqlParameter(
+                        "@idUsuario",
+                        idUsuario));
+
+                return bd.ConsultarSQL(
+                    sql,
+                    parametros);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "Erro ao listar serviços do mecânico. " +
                     ex.Message);
             }
         }

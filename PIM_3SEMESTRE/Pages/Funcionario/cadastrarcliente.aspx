@@ -9,7 +9,7 @@
 <title>AutoTech - Cadastrar Cliente</title>
 
 <link rel="stylesheet" href="../../css/funcionario/cadastrarcliente.css"/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
 
@@ -34,26 +34,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
             <img src="../../img/logo.png"/>
 
         </div>
-
-        <div class="menu">
-
-            <a href="#">
-                <i class="fa-solid fa-table-columns"></i>
-                Painel do Cliente
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                Histórico
-            </a>
-
-            <a href="#">
-                <i class="fa-regular fa-user"></i>
-                Meus Dados
-            </a>
-
-        </div>
-
         <div class="menu-title">
             ATENDENTE
         </div>

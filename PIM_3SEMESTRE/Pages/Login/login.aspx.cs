@@ -113,13 +113,13 @@ namespace PIM_3SEMESTRE.Pages.Login
                         else if (tipoUsuario == "Funcionario")
                         {
                             Response.Redirect(
-                                "~/Pages/Funcionario/dashboard.aspx"
+                                "~/Pages/Funcionario/ordemservico.aspx"
                             );
                         }
                         else if (tipoUsuario == "Mecanico")
                         {
                             Response.Redirect(
-                                "~/Pages/Mecanico/dashboard.aspx"
+                                "~/Pages/Mecanico/paginamecanico.aspx"
                             );
                         }
                         else if (tipoUsuario == "Cliente")

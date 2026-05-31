@@ -1,30 +1,93 @@
-﻿* {
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+/* =========================================================
+   RESET GLOBAL
+========================================================= */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100vh; /* Permite que o body cresça se o conteúdo precisar de espaço */
-    background: #050505;
-    /* overflow: hidden removido para evitar que o conteúdo suma em telas pequenas ou com muito zoom */
+:root {
+    --bg: #f4f7fb;
+    --bg-secondary: #eef2f7;
+    --card: rgba(255,255,255,.92);
+    --card-hover: #ffffff;
+    --border: rgba(15,23,42,.08);
+    --border-strong: rgba(15,23,42,.14);
+    --text: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius: 24px;
+    --radius-md: 18px;
+    --radius-sm: 14px;
+    --shadow-lg: 0 25px 60px rgba(15,23,42,.10);
+    --shadow-md: 0 14px 35px rgba(15,23,42,.08);
 }
 
-/* ---------- LAYOUT ---------- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: radial-gradient(circle at top left, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at bottom right, rgba(59,130,246,.08), transparent 28%), linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    letter-spacing: -.01em;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf2f7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #cbd5e1, #94a3b8);
+    border-radius: 999px;
+    border: 2px solid #edf2f7;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #2563eb, #1d4ed8);
+    }
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
 .container {
     width: 100%;
     min-height: 100vh;
     display: flex;
 }
 
-/* ---------- ESQUERDA ---------- */
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
 .left-side {
     width: 52%;
     position: relative;
-    background: url('../../img/fundo-oficina.jpg') center/cover no-repeat;
-    padding: clamp(20px, 3rem, 50px); /* Trocado vw por rem para estabilizar em telas gigantes */
+    background: linear-gradient(rgba(255,255,255,.78), rgba(255,255,255,.78)), url('../../img/fundo-oficina.jpg') center/cover no-repeat;
+    padding: clamp(20px, 3rem, 50px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -33,7 +96,7 @@ html, body {
 .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,.72);
+    background: radial-gradient(circle at top left, rgba(37,99,235,.10), transparent 35%), radial-gradient(circle at bottom right, rgba(59,130,246,.08), transparent 35%);
 }
 
 .logo-box {
@@ -41,28 +104,29 @@ html, body {
 }
 
     .logo-box h1 {
-        color: white;
-        font-size: clamp(2.5rem, 4rem, 4.5rem); /* Reduzido o teto máximo para não virar um outdoor */
+        color: var(--text);
+        font-size: clamp(2.5rem, 4rem, 4.5rem);
         font-weight: 800;
         line-height: 1.1;
     }
 
     .logo-box span {
-        color: #ff2222;
+        color: var(--primary);
     }
 
     .logo-box p {
-        color: #ddd;
-        font-size: clamp(.8rem, 1.1rem, 1.3rem); /* Estabilizado com rem */
+        color: var(--text-secondary);
+        font-size: clamp(.8rem, 1.1rem, 1.3rem);
         letter-spacing: 2px;
         margin-top: 10px;
     }
 
 .car-image {
-    width: min(85%, 600px); /* Reduzido levemente o limite para manter a elegância em telas grandes */
+    width: min(85%, 600px);
     margin: auto;
     z-index: 2;
     object-fit: contain;
+    filter: drop-shadow(0 25px 45px rgba(37,99,235,.15));
 }
 
 .features {
@@ -70,115 +134,144 @@ html, body {
     display: flex;
     gap: 20px;
     padding: clamp(15px, 2rem, 28px);
-    border-radius: 20px;
-    background: rgba(255,255,255,.05);
-    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.85);
+    box-shadow: var(--shadow-md);
 }
 
 .feature {
     flex: 1;
     text-align: center;
-    color: white;
+    color: var(--text);
 }
 
     .feature i {
-        color: #ff2222;
+        color: var(--primary);
         font-size: clamp(1.3rem, 1.8rem, 2rem);
         margin-bottom: 10px;
     }
 
     .feature h4 {
         font-size: clamp(.8rem, .95rem, 1rem);
+        margin-bottom: 6px;
     }
 
     .feature p {
-        color: #ccc;
+        color: var(--text-secondary);
         font-size: clamp(.65rem, .75rem, .85rem);
     }
 
-/* ---------- DIREITA ---------- */
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
 .right-side {
     width: 48%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: clamp(20px, 3rem, 40px);
-    background: #080808;
-    overflow-y: auto; /* Caso o formulário fique maior que a tela vertical, ele rola internamente */
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+    overflow-y: auto;
 }
 
 .login-card {
-    width: min(100%, 500px); /* Limitado a 500px para manter uma proporção perfeita de card */
+    width: min(100%, 500px);
     padding: clamp(25px, 2.5rem, 45px);
-    border-radius: 25px;
-    background: rgba(255,255,255,.05);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 0 40px rgba(0,0,0,.5);
-    margin: auto; /* Centraliza verticalmente se houver espaço livre */
+    border-radius: 32px;
+    background: rgba(255,255,255,.78);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,.9);
+    box-shadow: 0 30px 80px rgba(15,23,42,.12);
+    margin: auto;
 }
+
+/* =========================================================
+   LOGO MINI
+========================================================= */
 
 .logo-mini {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
     .logo-mini h2 {
-        color: white;
+        color: var(--text);
         font-size: clamp(1.8rem, 2.3rem, 2.6rem);
         font-weight: 800;
     }
 
     .logo-mini span {
-        color: #ff2222;
+        color: var(--primary);
     }
 
     .logo-mini p {
-        color: #ccc;
+        color: var(--text-secondary);
         font-size: clamp(.75rem, .85rem, .95rem);
     }
 
+/* =========================================================
+   TITLES
+========================================================= */
+
 .login-card h1 {
     text-align: center;
-    color: white;
+    color: var(--text);
     font-size: clamp(1.6rem, 2rem, 2.4rem);
 }
 
     .login-card h1 span {
-        color: #ff2222;
+        color: var(--primary);
     }
 
 .subtitle {
     text-align: center;
-    color: #bbb;
-    margin: 10px 0 25px;
+    color: var(--text-secondary);
+    margin: 10px 0 28px;
     font-size: clamp(.8rem, .9rem, 1rem);
 }
 
-/* ---------- INPUTS ---------- */
+/* =========================================================
+   INPUTS
+========================================================= */
+
 .input-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
     .input-group label {
-        color: white;
+        color: var(--text);
         font-size: clamp(.8rem, .9rem, 1rem);
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        font-weight: 600;
     }
 
 .input-box {
-    height: 56px; /* Definido tamanho fixo equilibrado para inputs, evitando flutuações de vh */
+    height: 58px;
     display: flex;
     align-items: center;
     padding: 0 18px;
-    border-radius: 14px;
-    background: #111;
-    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,.95);
+    border: 1px solid rgba(148,163,184,.20);
+    transition: .3s ease;
+    box-shadow: 0 4px 12px rgba(15,23,42,.03);
 }
 
+    .input-box:hover {
+        border-color: rgba(37,99,235,.25);
+    }
+
+    .input-box:focus-within {
+        border-color: rgba(37,99,235,.45);
+        box-shadow: 0 0 0 5px rgba(37,99,235,.10);
+    }
+
     .input-box i {
-        color: #888;
+        color: #94a3b8;
         margin-right: 12px;
         font-size: 1rem;
     }
@@ -188,46 +281,57 @@ html, body {
         border: none;
         outline: none;
         background: none;
-        color: white;
+        color: var(--text);
         font-size: 1rem;
+        font-family: inherit;
     }
+
+        .input-box input::placeholder {
+            color: #94a3b8;
+        }
 
 .eye {
     cursor: pointer;
 }
 
-/* ---------- CHECK ---------- */
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
 .remember {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #ccc;
+    color: var(--text-secondary);
     margin: 18px 0;
     font-size: clamp(.75rem, .85rem, .95rem);
 }
 
-/* ---------- CAPTCHA ---------- */
+/* =========================================================
+   CAPTCHA
+========================================================= */
+
 .captcha-box {
     padding: clamp(15px, 1.5rem, 25px);
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.08);
-    background: rgba(255,255,255,.03);
-    margin-bottom: 20px;
+    border-radius: 22px;
+    border: 1px solid rgba(148,163,184,.15);
+    background: rgba(255,255,255,.65);
+    margin-bottom: 22px;
     text-align: center;
 }
 
 .captcha-title {
-    color: white;
-    font-weight: 600;
+    color: var(--text);
+    font-weight: 700;
     font-size: clamp(.9rem, 1rem, 1.1rem);
 }
 
     .captcha-title i {
-        color: #ff2222;
+        color: var(--primary);
     }
 
 .captcha-box p {
-    color: #aaa;
+    color: var(--text-secondary);
     margin: 10px 0 20px;
     font-size: clamp(.75rem, .85rem, .9rem);
 }
@@ -240,32 +344,51 @@ html, body {
     overflow: hidden;
 }
 
-/* ---------- BOTÃO ---------- */
+/* =========================================================
+   BUTTON
+========================================================= */
+
 .btn-login {
     width: 100%;
-    height: 58px; /* Altura fixa ideal para botões de ação */
+    height: 58px;
     border: none;
-    border-radius: 14px;
-    background: linear-gradient(90deg,#ff1d1d,#d30000);
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
-    transition: .3s;
+    transition: .3s ease;
+    box-shadow: 0 15px 30px rgba(37,99,235,.25);
 }
 
     .btn-login:hover {
-        transform: scale(1.01);
+        transform: translateY(-2px);
+        box-shadow: 0 22px 40px rgba(37,99,235,.35);
     }
+
+/* =========================================================
+   FORGOT
+========================================================= */
 
 .forgot {
     display: block;
-    margin-top: 22px;
+    margin-top: 24px;
     text-align: center;
-    color: #ff2222;
+    color: var(--primary);
     text-decoration: none;
     font-size: clamp(.8rem, .9rem, 1rem);
+    font-weight: 600;
+    transition: .3s ease;
 }
+
+    .forgot:hover {
+        color: var(--primary-dark);
+    }
+
+/* =========================================================
+   VLibras
+========================================================= */
 
 [vw] {
     z-index: 999999999 !important;
@@ -276,8 +399,12 @@ html, body {
     z-index: 999999999 !important;
 }
 
-/* ---------- RESPONSIVO ---------- */
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
 @media (max-width: 950px) {
+
     .container {
         flex-direction: column;
     }
@@ -298,16 +425,20 @@ html, body {
     }
 }
 
-/* ---------- SUPORTE PARA TELAS EXTREMAMENTE GRANDES (4K / Ultrawide) ---------- */
+/* =========================================================
+   TELAS 4K / ULTRAWIDE
+========================================================= */
+
 @media (min-width: 2000px) {
+
     .container {
-        max-width: 1920px; /* Impede que o layout estique infinitamente para os lados */
+        max-width: 1920px;
         margin: 0 auto;
-        box-shadow: 0 0 100px rgba(0,0,0,0.8);
+        box-shadow: 0 0 100px rgba(15,23,42,.10);
     }
 
     body {
-        background: #020202; /* Fundo ligeiramente diferente nas bordas externas em telas 4K */
+        background: #edf4fb;
         display: flex;
         align-items: center;
         justify-content: center;
