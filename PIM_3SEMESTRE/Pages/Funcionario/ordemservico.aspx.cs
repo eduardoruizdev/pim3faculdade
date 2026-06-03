@@ -3,7 +3,6 @@ using PIM_3SEMESTRE.Controllers;
 using System;
 using System.Web.UI.WebControls;
 
-
 namespace PIM_3SEMESTRE.Pages.Funcionario
 {
     public partial class ordemservico : System.Web.UI.Page
@@ -32,23 +31,50 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         // =========================================
-        // BUSCAR
+        // BUSCAR POR CPF
         // =========================================
 
         protected void btnBuscar_Click(
             object sender,
             EventArgs e)
         {
-            CarregarServicos();
+            try
+            {
+                string cpf =
+                    txtBuscar.Text.Trim();
+
+                cpf = cpf.Replace(".", "")
+                         .Replace("-", "")
+                         .Replace("/", "");
+
+                if (string.IsNullOrEmpty(cpf))
+                {
+                    CarregarServicos();
+                    return;
+                }
+
+                gvServicos.DataSource =
+                    controller.BuscarServicoPorCpf(cpf);
+
+                gvServicos.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                    "<script>alert('" +
+                    ex.Message.Replace("'", "") +
+                    "')</script>"
+                );
+            }
         }
 
         // =========================================
         // SELECIONAR GRID
         // =========================================
 
-protected void gvServicos_SelectedIndexChanged(
-    object sender,
-    EventArgs e)
+        protected void gvServicos_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
         {
             try
             {
@@ -65,11 +91,22 @@ protected void gvServicos_SelectedIndexChanged(
                     hfIdServico.Value =
                         dados["id_servico"].ToString();
 
+                    // =====================================
+                    // CABEÇALHO
+                    // =====================================
+
                     lblOS.Text =
                         dados["id_servico"].ToString();
 
+                    lblTituloServico.Text =
+                        dados["nm_titulo_servico"].ToString();
+
                     lblStatus.Text =
                         dados["st_servico"].ToString();
+
+                    // =====================================
+                    // VEÍCULO
+                    // =====================================
 
                     lblModelo.Text =
                         dados["nm_modelo_veiculo_servico"].ToString();
@@ -87,14 +124,17 @@ protected void gvServicos_SelectedIndexChanged(
                         dados["qt_quilometragem_veiculo_servico"].ToString();
 
                     // =====================================
-                    // TIPO DE SERVIÇO
+                    // SERVIÇO
                     // =====================================
 
                     lblTipoServico.Text =
                         dados["nm_tipo_servico"].ToString();
 
+                    lblDescricao.Text =
+                        dados["ds_servico"].ToString();
+
                     // =====================================
-                    // MECÂNICO RESPONSÁVEL
+                    // MECÂNICO
                     // =====================================
 
                     lblMecanico.Text =
@@ -118,13 +158,6 @@ protected void gvServicos_SelectedIndexChanged(
                         Convert.ToDecimal(
                             dados["vl_servico"]
                         ).ToString("C");
-
-                    // =====================================
-                    // DESCRIÇÃO
-                    // =====================================
-
-                    lblDescricao.Text =
-                        dados["ds_servico"].ToString();
 
                     // =====================================
                     // STATUS
@@ -192,6 +225,18 @@ protected void gvServicos_SelectedIndexChanged(
         {
             try
             {
+                if (string.IsNullOrEmpty(hfIdServico.Value))
+                {
+                    ClientScript.RegisterStartupScript(
+                        this.GetType(),
+                        "msg",
+                        "alert('Selecione uma ordem de serviço primeiro!');",
+                        true
+                    );
+
+                    return;
+                }
+
                 controller.AtualizarStatus(
                     Convert.ToInt32(hfIdServico.Value),
                     ddlStatus.SelectedValue

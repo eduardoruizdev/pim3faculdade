@@ -15,7 +15,7 @@
 
 </head>
 
-<body>
+<body class="light-theme">
 
 <form id="form1" runat="server">
 
@@ -142,10 +142,10 @@
                                     Mecânico: <%# Eval("nm_mecanico") %>
                                 </div>
 
-                                <!-- 🔥 DESCRIÇÃO DO SERVIÇO -->
-                                <div class="service-date">
-                                    Serviço: <%# Eval("ds_servico") %>
-                                </div>
+                               <!-- TIPO DE SERVIÇO -->
+<div class="service-date">
+    Serviço: <%# Eval("nm_tipo_servico") %>
+</div>
 
                                 <!-- 💰 VALOR -->
                                 <div class="service-date">

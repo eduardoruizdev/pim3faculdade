@@ -50,12 +50,34 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
                     controller.ListarServicosMecanico(
                         idUsuario);
 
+                int idSelecionado = 0;
+
+                // PEGA ID DA URL
+                if (!string.IsNullOrEmpty(
+                    Request.QueryString["id"]))
+                {
+                    idSelecionado =
+                        Convert.ToInt32(
+                            Request.QueryString["id"]);
+                }
+
                 bool primeiro = true;
 
                 while (dados.Read())
                 {
                     nomeMecanico =
                         dados["nm_mecanico"].ToString();
+
+                    int idServico =
+                        Convert.ToInt32(
+                            dados["id_servico"]);
+
+                    // SE NÃO TIVER ID NA URL,
+                    // PEGA O PRIMEIRO
+                    if (idSelecionado == 0)
+                    {
+                        idSelecionado = idServico;
+                    }
 
                     string status =
                         dados["st_servico"].ToString();
@@ -75,9 +97,13 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
                         classeStatus = "aguardando";
                     }
 
+                    bool ativo =
+                        idSelecionado == idServico;
+
                     html.Append($@"
 
-<div class='order-card {(primeiro ? "active-card" : "")}'>
+<a href='paginamecanico.aspx?id={idServico}'
+   class='order-card {(ativo ? "active-card" : "")}'>
 
     <div class='top-order'>
 
@@ -121,8 +147,8 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
             Entrada:
             {Convert.ToDateTime(
-                dados["dt_cadastro_servico"])
-                .ToString("dd/MM/yyyy")}
+                        dados["dt_cadastro_servico"])
+                        .ToString("dd/MM/yyyy")}
 
         </span>
 
@@ -132,8 +158,8 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
             Previsão:
             {Convert.ToDateTime(
-                dados["dt_prevista_entrega_servico"])
-                .ToString("dd/MM/yyyy")}
+                        dados["dt_prevista_entrega_servico"])
+                        .ToString("dd/MM/yyyy")}
 
         </span>
 
@@ -143,11 +169,12 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
         <i class='fa-solid fa-chevron-right'></i>
     </div>
 
-</div>
+</a>
 
 ");
 
-                    if (primeiro)
+                    // DETALHES DO SERVIÇO SELECIONADO
+                    if (idSelecionado == idServico)
                     {
                         detalhesServico = $@"
 
@@ -231,8 +258,8 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
         <span>
             {Convert.ToDateTime(
-                dados["dt_cadastro_servico"])
-                .ToString("dd/MM/yyyy")}
+                        dados["dt_cadastro_servico"])
+                        .ToString("dd/MM/yyyy")}
         </span>
 
     </div>
@@ -246,8 +273,8 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
         <span>
             {Convert.ToDateTime(
-                dados["dt_prevista_entrega_servico"])
-                .ToString("dd/MM/yyyy")}
+                        dados["dt_prevista_entrega_servico"])
+                        .ToString("dd/MM/yyyy")}
         </span>
 
     </div>
@@ -275,8 +302,8 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
     <p class='obs'>
 
         R$ {Convert.ToDecimal(
-            dados["vl_servico"])
-            .ToString("N2")}
+                    dados["vl_servico"])
+                    .ToString("N2")}
 
     </p>
 

@@ -34,7 +34,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
                 <p>TECNOLOGIA • CONFIANÇA • PERFORMANCE</p>
             </div>
 
-            <img src="../../img/carro-login.png" class="car-image"/>
+            <img src="../../img/logofuncionario.png" class="car-image"/>
 
             <div class="features">
                 <div class="feature">
@@ -102,12 +102,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
                         <i class="fa-regular fa-eye eye"></i>
                     </div>
                 </div>
-
-                <div class="remember">
-                    <asp:CheckBox ID="chkLembrar" runat="server"/>
-                    <span>Lembrar de mim neste dispositivo</span>
-                </div>
-
              <div class="captcha-box">
 
  <div class="captcha-title">

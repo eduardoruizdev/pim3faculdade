@@ -572,8 +572,8 @@ ORDER BY s.id_servico DESC
                     ex.Message);
             }
         }
-   
-    public MySqlDataReader ListarServicosMecanico(int idUsuario)
+
+        public MySqlDataReader ListarServicosMecanico(int idUsuario)
         {
             try
             {
@@ -640,6 +640,77 @@ ORDER BY s.id_servico DESC
                 throw new Exception(
                     "Erro ao listar serviços do mecânico. " +
                     ex.Message);
+            }
+        }
+    
+
+    public MySqlDataReader BuscarServicoPorCpf(string cpf)
+        {
+            try
+            {
+                Banco bd = new Banco();
+
+                string sql = @"
+
+        SELECT
+            s.id_servico,
+            s.nm_titulo_servico,
+            s.ds_servico_resumido,
+            s.dt_cadastro_servico,
+            s.dt_prevista_entrega_servico,
+            s.ds_prioridade_servico,
+            s.cd_placa_veiculo_servico,
+            s.nm_modelo_veiculo_servico,
+            s.cd_ano_veiculo_servico,
+            s.nm_cor_veiculo_servico,
+            s.qt_quilometragem_veiculo_servico,
+            s.vl_servico,
+            s.ds_servico,
+            s.st_servico,
+
+            c.id_cliente,
+            c.cd_telefone_cliente,
+            c.cd_cpf_cliente,
+
+            u.nm_usuario,
+            u.nm_email_usuario
+
+        FROM servico s
+
+        INNER JOIN cliente c
+            ON s.id_cliente = c.id_cliente
+
+        INNER JOIN usuario u
+            ON c.id_usuario = u.id_usuario
+
+        WHERE REPLACE(REPLACE(c.cd_cpf_cliente, '.', ''), '-', '')
+              LIKE CONCAT('%', @cpf, '%')
+
+        ORDER BY s.id_servico DESC
+
+        ";
+
+                List<MySqlParameter> parametros =
+                    new List<MySqlParameter>();
+
+                parametros.Add(
+                    new MySqlParameter(
+                        "@cpf",
+                        cpf
+                    )
+                );
+
+                return bd.ConsultarSQL(
+                    sql,
+                    parametros
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "Erro ao buscar serviço por CPF. " +
+                    ex.Message
+                );
             }
         }
     }

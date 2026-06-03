@@ -24,19 +24,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <body>
 
 <form id="form1" runat="server">
-
 <div class="container">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
-            <img src="../../img/logo.png"/>
+
+            <img src="../../img/logoempresa.png"/>
+
+        </div>
+        <div class="menu-title">
+            ATENDENTE
         </div>
 
         <div class="menu">
 
-            <a href="#" class="active">
+            <a href="cadastrarservico.aspx" class="active">
                 <i class="fa-regular fa-pen-to-square"></i>
                 Cadastrar Serviço
             </a>
@@ -45,13 +49,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
                 <i class="fa-solid fa-user-plus"></i>
                 Cadastrar Cliente
             </a>
-
-            <a href="#">
-                <i class="fa-solid fa-rotate"></i>
-                Atualizar Status do serviço
-            </a>
-
-            <a href="#">
+            <a href="ordemservico.aspx">
                 <i class="fa-regular fa-rectangle-list"></i>
                 Visualizar Ordem de serviço
             </a>
@@ -67,34 +65,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
                 para te atender.
             </p>
 
-            <button type="button">
-                <i class="fa-solid fa-headset"></i>
-                Falar com a oficina
-            </button>
+           
+<a href="mailto:autotechoficina@gmail.com"
+   class="help-btn">
+
+    <i class="fa-solid fa-headset"></i>
+    Falar com a oficina
+
+</a>
 
         </div>
 
-        <a href="#" class="logout">
+        <a href="../Login/login.aspx" class="logout">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             Sair da conta
         </a>
 
     </aside>
 
-    <!-- CONTEÚDO -->
+    <!-- CONTEUDO -->
     <main class="content">
 
         <!-- TOPO -->
         <div class="topbar">
-
-            <div class="notification">
-                <i class="fa-regular fa-bell"></i>
-                <span>2</span>
-            </div>
-
             <div class="profile">
+
                 <span>Atendente</span>
-                <img src="../../img/user.png"/>
+
+                <img src="../../img/boneco.png"/>
+
             </div>
 
         </div>

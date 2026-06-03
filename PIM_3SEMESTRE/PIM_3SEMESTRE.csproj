@@ -124,6 +124,9 @@
     <Content Include="CSS\Funcionario\ordemservico.css" />
     <Content Include="CSS\Login\login.css" />
     <Content Include="CSS\Mecanico\paginamecanico.css" />
+    <Content Include="img\boneco.png" />
+    <Content Include="img\logoempresa.png" />
+    <Content Include="img\logofuncionario.png" />
     <Content Include="Pages\Cliente\historicocliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarcliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarservico.aspx" />
@@ -192,7 +195,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="img\" />
     <Folder Include="Pages\Adm\" />
   </ItemGroup>
   <PropertyGroup>

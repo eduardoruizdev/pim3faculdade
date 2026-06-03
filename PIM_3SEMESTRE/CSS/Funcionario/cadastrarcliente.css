@@ -92,7 +92,7 @@ body {
     width: 100%;
     height: 150px;
     border-radius: 30px;
-    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    background: #fff;
     border: 1px solid var(--border);
     display: flex;
     justify-content: center;
@@ -100,21 +100,20 @@ body {
     overflow: hidden;
     margin-bottom: 30px;
     box-shadow: var(--shadow);
-    position: relative;
+    padding: 0;
 }
 
+    .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
     .logo::before {
         content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(130deg, rgba(255,255,255,.8), transparent 40%);
         pointer-events: none;
-    }
-
-    .logo img {
-        width: 80%;
-        max-width: 220px;
-        object-fit: contain;
     }
 
 .menu-title {
@@ -634,7 +633,28 @@ body {
 [vw-access-button] {
     z-index: 999999999 !important;
 }
+.help-btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 14px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .3s;
+}
 
+    .help-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+    }
 /* =========================================
    RESPONSIVIDADE
 ========================================= */

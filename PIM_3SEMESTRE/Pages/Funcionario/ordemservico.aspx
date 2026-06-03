@@ -34,7 +34,7 @@ Inherits="PIM_3SEMESTRE.Pages.Funcionario.ordemservico" %>
     <aside class="sidebar">
 
         <div class="logo">
-            <img src="../../img/logo.png" />
+            <img src="../../img/logoempresa.png" />
         </div>
 
         <nav class="menu">
@@ -64,7 +64,29 @@ Inherits="PIM_3SEMESTRE.Pages.Funcionario.ordemservico" %>
             </a>
 
         </nav>
+          <div class="help-box">
 
+      <h3>Precisa de ajuda?</h3>
+
+      <p>
+          Nossa equipe está pronta
+          para te atender.
+      </p>
+
+<a href="mailto:autotechoficina@gmail.com"
+   class="help-btn">
+
+    <i class="fa-solid fa-headset"></i>
+    Falar com a oficina
+
+</a>
+
+  </div>
+
+  <a href="../Login/login.aspx" class="logout">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      Sair da conta
+  </a>
     </aside>
 
     <!-- MAIN -->
@@ -161,33 +183,46 @@ Inherits="PIM_3SEMESTRE.Pages.Funcionario.ordemservico" %>
                     ID="hfIdServico"
                     runat="server" />
 
-                <!-- CABEÇALHO -->
-                <div class="details-header">
+               <div class="details-header">
 
-                    <h2>
+    <div>
 
-                        OS #
+        <h2>
 
-                        <asp:Label
-                            ID="lblOS"
-                            runat="server"
-                            Text="-">
-                        </asp:Label>
+            OS #
 
-                    </h2>
+            <asp:Label
+                ID="lblOS"
+                runat="server"
+                Text="-">
+            </asp:Label>
 
-                    <span class="status andamento">
+        </h2>
 
-                        <asp:Label
-                            ID="lblStatus"
-                            runat="server"
-                            Text="-">
-                        </asp:Label>
+        <!-- TÍTULO DO SERVIÇO -->
+        <h3 class="titulo-servico">
 
-                    </span>
+            <asp:Label
+                ID="lblTituloServico"
+                runat="server"
+                Text="-">
+            </asp:Label>
 
-                </div>
+        </h3>
 
+    </div>
+
+    <span class="status andamento">
+
+        <asp:Label
+            ID="lblStatus"
+            runat="server"
+            Text="-">
+        </asp:Label>
+
+    </span>
+
+</div>
                 <!-- INFO -->
                 <div class="details-card">
 

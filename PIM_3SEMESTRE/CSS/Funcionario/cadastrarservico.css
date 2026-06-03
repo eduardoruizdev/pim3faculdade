@@ -89,7 +89,6 @@ body {
 /* =========================================
    LOGO
 ========================================= */
-
 .logo {
     width: 100%;
     height: 155px;
@@ -100,22 +99,32 @@ body {
     margin-bottom: 30px;
     position: relative;
     box-shadow: var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
 }
 
     .logo::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(130deg, rgba(255,255,255,.6), transparent 40%);
+        background: linear-gradient( 130deg, rgba(255,255,255,.5), transparent 40% );
         z-index: 1;
+        pointer-events: none;
     }
 
     .logo img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         position: relative;
         z-index: 0;
+        transition: .3s ease;
+    }
+
+    .logo:hover img {
+        transform: scale(1.03);
     }
 
 /* =========================================
@@ -658,7 +667,28 @@ select {
 [vw-access-button] {
     z-index: 999999999 !important;
 }
+.help-btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 14px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .3s;
+}
 
+    .help-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+    }
 /* =========================================
    RESPONSIVIDADE
 ========================================= */

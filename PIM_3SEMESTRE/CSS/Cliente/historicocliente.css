@@ -6,11 +6,50 @@
     box-sizing: border-box;
 }
 
+/* ========================================= */
+/* TEMA ESCURO (PADRÃO) */
+/* ========================================= */
+
+:root {
+    --bg: #020305;
+    --bg-secondary: #070b11;
+    --bg-card: #090c13;
+    --bg-hover: #12161d;
+    --text: #ffffff;
+    --text-secondary: #d1d1d1;
+    --text-muted: #8b8b8b;
+    --border: rgba(255,255,255,0.06);
+    --primary: #ff2d3f;
+    --primary-dark: #130508;
+    --sidebar-gradient: linear-gradient(180deg,#05070b,#020305);
+    --card-hover: #ff1f3d;
+}
+
+/* ========================================= */
+/* TEMA CLARO */
+/* ========================================= */
+
+body.light-theme {
+    --bg: #f4f6f9;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #eef2f7;
+    --text: #1f2937;
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
+    --border: rgba(0,0,0,0.08);
+    --primary: #e11d48;
+    --primary-dark: #ffe4ea;
+    --sidebar-gradient: linear-gradient(180deg,#ffffff,#f3f4f6);
+    --card-hover: #e11d48;
+}
+
 body {
-    background: #020305;
+    background: var(--bg);
     font-family: 'Inter',sans-serif;
-    color: #fff;
+    color: var(--text);
     overflow-x: hidden;
+    transition: 0.3s;
 }
 
 .container {
@@ -18,12 +57,14 @@ body {
     min-height: 100vh;
 }
 
+/* ========================================= */
 /* SIDEBAR */
+/* ========================================= */
 
 .sidebar {
     width: 320px;
-    background: linear-gradient(180deg,#05070b,#020305);
-    border-right: 1px solid rgba(255,255,255,0.05);
+    background: var(--sidebar-gradient);
+    border-right: 1px solid var(--border);
     padding: 30px 24px;
     display: flex;
     flex-direction: column;
@@ -39,7 +80,7 @@ body {
     }
 
 .menu-title {
-    color: #7d7d7d;
+    color: var(--text-muted);
     font-size: 13px;
     letter-spacing: 2px;
     margin-bottom: 20px;
@@ -59,7 +100,7 @@ body {
     gap: 16px;
     padding: 0 20px;
     text-decoration: none;
-    color: #d8d8d8;
+    color: var(--text-secondary);
     transition: 0.3s;
     font-size: 18px;
 }
@@ -69,18 +110,22 @@ body {
     }
 
     .menu-item:hover {
-        background: #10131a;
+        background: var(--bg-hover);
     }
 
     .menu-item.active {
-        background: linear-gradient(90deg,#2c060b,#170406);
-        color: #ff2d3f;
-        border-left: 4px solid #ff1f3d;
+        background: var(--primary-dark);
+        color: var(--primary);
+        border-left: 4px solid var(--primary);
     }
 
+/* ========================================= */
+/* HELP BOX */
+/* ========================================= */
+
 .help-box {
-    background: #090c13;
-    border: 1px solid rgba(255,255,255,0.06);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 22px;
     padding: 25px;
 }
@@ -89,7 +134,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 14px;
-    background: #11151d;
+    background: var(--bg-hover);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,10 +148,11 @@ body {
 .help-box h3 {
     font-size: 30px;
     margin-bottom: 14px;
+    color: var(--text);
 }
 
 .help-box p {
-    color: #a0a0a0;
+    color: var(--text-muted);
     line-height: 28px;
     margin-bottom: 22px;
 }
@@ -115,16 +161,16 @@ body {
     width: 100%;
     height: 56px;
     border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--border);
     background: transparent;
-    color: #fff;
+    color: var(--text);
     font-size: 17px;
     cursor: pointer;
     transition: 0.3s;
 }
 
     .help-box button:hover {
-        background: #12161d;
+        background: var(--bg-hover);
     }
 
 .logout {
@@ -133,7 +179,7 @@ body {
     align-items: center;
     gap: 14px;
     text-decoration: none;
-    color: #ff2d3f;
+    color: var(--primary);
     font-size: 22px;
 }
 
@@ -141,14 +187,18 @@ body {
         font-size: 30px;
     }
 
+/* ========================================= */
 /* MAIN */
+/* ========================================= */
 
 .main-content {
     flex: 1;
     padding: 20px 35px;
 }
 
+/* ========================================= */
 /* TOPBAR */
+/* ========================================= */
 
 .topbar {
     display: flex;
@@ -178,18 +228,19 @@ body {
         right: -6px;
         width: 20px;
         height: 20px;
-        background: #ff1f3d;
+        background: var(--primary);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 11px;
         font-weight: 600;
+        color: #fff;
     }
 
 .profile {
-    background: #090c13;
-    border: 1px solid rgba(255,255,255,0.06);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 18px;
     padding: 12px 16px;
     display: flex;
@@ -200,23 +251,24 @@ body {
 .profile-info h4 {
     font-size: 20px;
     margin-bottom: 4px;
+    color: var(--text);
 }
 
 .profile-info p {
-    color: #ff3b4b;
+    color: var(--primary);
     font-size: 16px;
 }
 
 .profile i {
     font-size: 22px;
-    color: #bdbdbd;
+    color: var(--text-secondary);
 }
 
 .avatar {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #1a1f28;
+    background: var(--bg-hover);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -224,7 +276,9 @@ body {
     font-size: 18px;
 }
 
+/* ========================================= */
 /* HERO */
+/* ========================================= */
 
 .hero {
     position: relative;
@@ -233,14 +287,14 @@ body {
     overflow: hidden;
     margin-bottom: 30px;
     background: url('../../img/banner-carro.jpg') center/cover;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
 }
 
 .hero-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg,#040507 20%,rgba(0,0,0,0.3));
+    background: linear-gradient( 90deg, rgba(0,0,0,0.75) 20%, rgba(0,0,0,0.25) );
 }
 
 .hero-content {
@@ -252,14 +306,17 @@ body {
     .hero-content h1 {
         font-size: 58px;
         margin-bottom: 14px;
+        color: #fff;
     }
 
     .hero-content p {
         font-size: 24px;
-        color: #d2d2d2;
+        color: #ededed;
     }
 
+/* ========================================= */
 /* FILTERS */
+/* ========================================= */
 
 .filters {
     display: flex;
@@ -272,25 +329,27 @@ body {
     height: 58px;
     padding: 0 28px;
     border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: #090d14;
-    color: #fff;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text);
     font-size: 18px;
     cursor: pointer;
     transition: 0.3s;
 }
 
     .filter-btn:hover {
-        border-color: #ff1f3d;
+        border-color: var(--primary);
     }
 
 .active-filter {
-    background: #130508;
-    border: 1px solid #ff1f3d;
-    color: #ff3047;
+    background: var(--primary-dark);
+    border: 1px solid var(--primary);
+    color: var(--primary);
 }
 
+/* ========================================= */
 /* SERVICES */
+/* ========================================= */
 
 .services {
     display: flex;
@@ -299,8 +358,8 @@ body {
 }
 
 .service-card {
-    background: #070b11;
-    border: 1px solid rgba(255,255,255,0.05);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
     border-radius: 26px;
     padding: 28px;
     display: flex;
@@ -311,7 +370,7 @@ body {
 
     .service-card:hover {
         transform: translateY(-3px);
-        border-color: #ff1f3d;
+        border-color: var(--card-hover);
     }
 
 .service-left {
@@ -343,9 +402,18 @@ body {
     color: #2aff71;
 }
 
+body.light-theme .andamento-icon {
+    background: #ffe5ea;
+}
+
+body.light-theme .concluido-icon {
+    background: #dcfce7;
+}
+
 .service-info h2 {
     font-size: 34px;
     margin-bottom: 14px;
+    color: var(--text);
 }
 
 .service-status-line {
@@ -357,7 +425,7 @@ body {
 }
 
 .os-number {
-    color: #ff2f45;
+    color: var(--primary);
     font-size: 22px;
     font-weight: 600;
 }
@@ -387,7 +455,7 @@ body {
     align-items: center;
     gap: 10px;
     margin-top: 10px;
-    color: #d1d1d1;
+    color: var(--text-secondary);
     font-size: 20px;
 }
 
@@ -395,13 +463,17 @@ body {
         font-size: 24px;
     }
 
+/* ========================================= */
+/* BOTÃO */
+/* ========================================= */
+
 .details-btn {
     width: 220px;
     height: 64px;
     border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--border);
     background: transparent;
-    color: #fff;
+    color: var(--text);
     font-size: 20px;
     cursor: pointer;
     transition: 0.3s;
@@ -412,15 +484,17 @@ body {
 }
 
     .details-btn:hover {
-        background: #12161d;
-        border-color: #ff1f3d;
+        background: var(--bg-hover);
+        border-color: var(--primary);
     }
 
     .details-btn i {
         font-size: 26px;
     }
 
-/* PAGINATION */
+/* ========================================= */
+/* PAGINAÇÃO */
+/* ========================================= */
 
 .pagination {
     margin-top: 35px;
@@ -434,21 +508,27 @@ body {
         height: 58px;
         border: none;
         border-radius: 14px;
-        background: #090d14;
-        color: #fff;
+        background: var(--bg-card);
+        color: var(--text);
         font-size: 18px;
         cursor: pointer;
         transition: 0.3s;
-        border: 1px solid rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
     }
 
         .pagination button:hover {
-            border-color: #ff1f3d;
+            border-color: var(--primary);
         }
 
 .page-active {
-    background: linear-gradient(45deg,#ff0026,#ff4545) !important;
+    background: linear-gradient( 45deg, #ff0026, #ff4545 ) !important;
+    color: #fff !important;
 }
+
+/* ========================================= */
+/* VLibras */
+/* ========================================= */
+
 [vw] {
     z-index: 999999999 !important;
     position: fixed !important;
@@ -457,7 +537,10 @@ body {
 [vw-access-button] {
     z-index: 999999999 !important;
 }
+
+/* ========================================= */
 /* RESPONSIVO */
+/* ========================================= */
 
 @media(max-width:1300px) {
 

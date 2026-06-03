@@ -113,7 +113,7 @@ namespace PIM_3SEMESTRE.Pages.Login
                         else if (tipoUsuario == "Funcionario")
                         {
                             Response.Redirect(
-                                "~/Pages/Funcionario/ordemservico.aspx"
+                                "~/Pages/Funcionario/cadastrarcliente.aspx"
                             );
                         }
                         else if (tipoUsuario == "Mecanico")
