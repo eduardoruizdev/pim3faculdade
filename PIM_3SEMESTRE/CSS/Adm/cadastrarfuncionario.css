@@ -1,0 +1,575 @@
+﻿/* =========================================
+   RESET
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f4f7fb;
+    --bg-secondary: #ffffff;
+    --border: rgba(15,23,42,.08);
+    --text: #0f172a;
+    --text-secondary: #475569;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --shadow: 0 20px 45px rgba(15,23,42,.08);
+    --transition: .3s ease;
+}
+
+body {
+    background: radial-gradient(circle at top left, rgba(37,99,235,.10), transparent 28%), radial-gradient(circle at bottom right, rgba(59,130,246,.08), transparent 25%), var(--bg);
+    font-family: 'Poppins',sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 320px;
+    min-height: 100vh;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    width: 100%;
+    height: 150px;
+    border-radius: 30px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+    .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.menu-title {
+    margin-bottom: 18px;
+    color: #94a3b8;
+    font-size: .85rem;
+    letter-spacing: 4px;
+    font-weight: 700;
+    padding-left: 6px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+    .menu a {
+        width: 100%;
+        min-height: 60px;
+        padding: 18px;
+        border-radius: 20px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: var(--transition);
+        font-weight: 500;
+    }
+
+        .menu a:hover {
+            background: #fff;
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        .menu a.active {
+            background: linear-gradient( 90deg, rgba(37,99,235,.14), rgba(37,99,235,.04) );
+            color: var(--primary);
+            border: 1px solid rgba(37,99,235,.18);
+        }
+
+.help-box {
+    margin-top: auto;
+    padding: 25px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+    .help-box h3 {
+        margin-bottom: 10px;
+    }
+
+    .help-box p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+.help-btn {
+    width: 100%;
+    height: 55px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(90deg,#2563eb,#1d4ed8);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+    .help-btn:hover {
+        transform: translateY(-2px);
+    }
+
+.logout {
+    margin-top: 20px;
+    color: #ef4444;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 18px;
+    transition: .3s;
+}
+
+    .logout:hover {
+        background: rgba(239,68,68,.08);
+    }
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.content {
+    flex: 1;
+    padding: 35px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 35px;
+}
+
+.profile {
+    background: white;
+    padding: 10px 18px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+}
+
+    .profile img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+    }
+
+/* =========================================
+   FORMULARIO
+========================================= */
+
+.form-container {
+    width: 100%;
+    background: rgba(255,255,255,.90);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 35px;
+    box-shadow: var(--shadow);
+}
+
+.form-header {
+    margin-bottom: 35px;
+}
+
+    .form-header h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: var(--text);
+    }
+
+    .form-header p {
+        color: var(--text-secondary);
+    }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 24px;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .input-box.full {
+        grid-column: span 2;
+    }
+
+    .input-box label {
+        font-size: .92rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+
+.input-field {
+    width: 100%;
+    height: 58px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: white;
+    padding: 0 18px;
+    font-size: .95rem;
+    outline: none;
+    transition: .3s;
+    font-family: 'Poppins',sans-serif;
+}
+
+    .input-field:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+    }
+
+.textarea {
+    height: auto !important;
+    resize: none;
+    padding-top: 16px;
+}
+
+.btn-area {
+    margin-top: 35px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-cadastrar {
+    min-width: 220px;
+    height: 58px;
+    border: none;
+    border-radius: 18px;
+    background: linear-gradient(90deg,#2563eb,#1d4ed8);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 10px 20px rgba(37,99,235,.18);
+}
+
+    .btn-cadastrar:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+/* ========================================= */
+/* VLibras */
+/* ========================================= */
+
+[vw] {
+    z-index: 999999999 !important;
+    position: fixed !important;
+}
+
+[vw-access-button] {
+    z-index: 999999999 !important;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+/* Notebook menor e tablet horizontal */
+@media screen and (max-width: 1200px) {
+
+    .sidebar {
+        width: 280px;
+        padding: 20px;
+    }
+
+    .content {
+        padding: 25px;
+    }
+
+    .form-grid {
+        gap: 18px;
+    }
+}
+
+/* Tablets */
+@media screen and (max-width: 992px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+        top: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .content {
+        width: 100%;
+        padding: 25px;
+    }
+
+    .logo {
+        height: 120px;
+    }
+
+    .help-box {
+        margin-top: 25px;
+    }
+
+    .topbar {
+        justify-content: center;
+    }
+
+    .profile {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Tablets pequenos */
+@media screen and (max-width: 768px) {
+
+    .content {
+        padding: 20px;
+    }
+
+    .form-container {
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    .form-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .input-box.full {
+        grid-column: span 1;
+    }
+
+    .btn-area {
+        justify-content: center;
+    }
+
+    .btn-cadastrar {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Celulares */
+@media screen and (max-width: 576px) {
+
+    .sidebar {
+        padding: 15px;
+    }
+
+    .logo {
+        height: 100px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+
+    .menu-title {
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+
+    .menu {
+        gap: 8px;
+    }
+
+        .menu a {
+            min-height: 50px;
+            padding: 14px;
+            font-size: 0.9rem;
+            border-radius: 15px;
+        }
+
+    .help-box {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+        .help-box h3 {
+            font-size: 1rem;
+        }
+
+        .help-box p {
+            font-size: 0.9rem;
+        }
+
+    .help-btn {
+        height: 50px;
+        font-size: 0.9rem;
+    }
+
+    .logout {
+        padding: 14px;
+        font-size: 0.9rem;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px;
+    }
+
+        .profile img {
+            width: 55px;
+            height: 55px;
+        }
+
+    .form-container {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .form-header {
+        margin-bottom: 25px;
+    }
+
+        .form-header h1 {
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+
+        .form-header p {
+            font-size: 0.9rem;
+        }
+
+    .input-box label {
+        font-size: 0.85rem;
+    }
+
+    .input-field {
+        height: 52px;
+        font-size: 0.9rem;
+        padding: 0 14px;
+    }
+
+    .textarea {
+        padding-top: 14px;
+    }
+
+    .btn-cadastrar {
+        width: 100%;
+        height: 52px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Celulares pequenos (iPhone SE, Galaxy antigos) */
+@media screen and (max-width: 375px) {
+
+    .sidebar {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .logo {
+        height: 85px;
+    }
+
+    .menu a {
+        padding: 12px;
+        font-size: 0.85rem;
+        gap: 10px;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .form-header p {
+        font-size: 0.85rem;
+    }
+
+    .input-field {
+        height: 48px;
+        font-size: 0.85rem;
+        padding: 0 12px;
+    }
+
+    .btn-cadastrar {
+        height: 48px;
+        font-size: 0.9rem;
+    }
+
+    .profile {
+        padding: 10px;
+    }
+
+        .profile img {
+            width: 45px;
+            height: 45px;
+        }
+}
+
+/* Monitores grandes */
+@media screen and (min-width: 1600px) {
+
+    .content {
+        padding: 50px;
+    }
+
+    .form-container {
+        max-width: 1400px;
+    }
+
+    .form-grid {
+        gap: 30px;
+    }
+}

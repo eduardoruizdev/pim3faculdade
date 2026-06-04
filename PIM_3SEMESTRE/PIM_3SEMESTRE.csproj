@@ -118,6 +118,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\Adm\cadastrarfuncionario.css" />
+    <Content Include="CSS\Adm\cadastrarServico.css" />
+    <Content Include="CSS\Adm\relatorio.css" />
     <Content Include="CSS\Cliente\historicocliente.css" />
     <Content Include="CSS\Funcionario\cadastrarcliente.css" />
     <Content Include="CSS\Funcionario\cadastrarservico.css" />
@@ -127,6 +130,9 @@
     <Content Include="img\boneco.png" />
     <Content Include="img\logoempresa.png" />
     <Content Include="img\logofuncionario.png" />
+    <Content Include="Pages\ADM\cadastrarfuncionario.aspx" />
+    <Content Include="Pages\ADM\CadastrarServico.aspx" />
+    <Content Include="Pages\ADM\relatorio.aspx" />
     <Content Include="Pages\Cliente\historicocliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarcliente.aspx" />
     <Content Include="Pages\Funcionario\cadastrarservico.aspx" />
@@ -138,9 +144,38 @@
   <ItemGroup>
     <Compile Include="Classes\Controller\ClienteController.cs" />
     <Compile Include="Classes\Controller\ControllerServico.cs" />
+    <Compile Include="Classes\Controller\MecanicoController.cs" />
+    <Compile Include="Classes\Controller\RelatorioController.cs" />
+    <Compile Include="Classes\Controller\TipoServicoController.cs" />
+    <Compile Include="Classes\Controller\UsuarioController.cs" />
     <Compile Include="Classes\DataBase\Banco.cs" />
     <Compile Include="Classes\Models\ClienteModel.cs" />
+    <Compile Include="Classes\Models\MecanicoModel.cs" />
     <Compile Include="Classes\Models\ModelServico.cs" />
+    <Compile Include="Classes\Models\TipoServicoModel.cs" />
+    <Compile Include="Classes\Models\TipoUsuarioModel.cs" />
+    <Compile Include="Classes\Models\UsuarioModel.cs" />
+    <Compile Include="Pages\ADM\cadastrarfuncionario.aspx.cs">
+      <DependentUpon>cadastrarfuncionario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ADM\cadastrarfuncionario.aspx.designer.cs">
+      <DependentUpon>cadastrarfuncionario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ADM\CadastrarServico.aspx.cs">
+      <DependentUpon>CadastrarServico.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ADM\CadastrarServico.aspx.designer.cs">
+      <DependentUpon>CadastrarServico.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ADM\relatorio.aspx.cs">
+      <DependentUpon>relatorio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ADM\relatorio.aspx.designer.cs">
+      <DependentUpon>relatorio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Cliente\historicocliente.aspx.cs">
       <DependentUpon>historicocliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -194,9 +229,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\Adm\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
