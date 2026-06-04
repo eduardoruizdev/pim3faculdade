@@ -5,8 +5,17 @@ using PIM_3SEMESTRE.Models;
 
 namespace PIM_3SEMESTRE.Pages.Funcionario
 {
+    /// <summary>
+    /// Página responsável pelo cadastro de serviços da oficina.
+    /// Permite selecionar cliente, mecânico, tipo de serviço,
+    /// informar dados do veículo e calcular o valor total.
+    /// </summary>
     public partial class cadastrarservico : System.Web.UI.Page
     {
+        /// <summary>
+        /// Evento executado ao carregar a página.
+        /// Carrega clientes, tipos de serviços e mecânicos.
+        /// </summary>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -17,6 +26,9 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
         }
 
+        /// <summary>
+        /// Carrega os clientes cadastrados no DropDownList.
+        /// </summary>
         private void CarregarClientes()
         {
             ClienteController controller =
@@ -27,6 +39,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
             ddlCliente.Items.Clear();
 
+            // Item padrão da lista
             ddlCliente.Items.Add(
                 new System.Web.UI.WebControls.ListItem(
                     "Selecione o cliente",
@@ -34,6 +47,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 )
             );
 
+            // Adiciona os clientes encontrados
             while (dados.Read())
             {
                 ddlCliente.Items.Add(
@@ -46,6 +60,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
             dados.Close();
         }
+
+        /// <summary>
+        /// Carrega os mecânicos cadastrados no sistema.
+        /// </summary>
         private void CarregarMecanicos()
         {
             ControllerServico controller =
@@ -75,6 +93,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
             dados.Close();
         }
+
+        /// <summary>
+        /// Carrega os tipos de serviços cadastrados.
+        /// </summary>
         private void CarregarTiposServico()
         {
             ControllerServico controller =
@@ -105,6 +127,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             dados.Close();
         }
 
+        /// <summary>
+        /// Evento executado ao selecionar um cliente.
+        /// Carrega automaticamente telefone, e-mail e CPF.
+        /// </summary>
         protected void ddlCliente_SelectedIndexChanged(
             object sender,
             EventArgs e
@@ -152,6 +178,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
         }
 
+        /// <summary>
+        /// Calcula automaticamente o valor total do serviço.
+        /// Soma mão de obra e peças, subtraindo o desconto.
+        /// </summary>
         protected void CalcularValorTotal(
             object sender,
             EventArgs e
@@ -189,6 +219,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 total.ToString("N2");
         }
 
+        /// <summary>
+        /// Evento executado ao clicar no botão Cadastrar.
+        /// Realiza validações e salva o serviço no banco.
+        /// </summary>
         protected void btnCadastrar_Click(
             object sender,
             EventArgs e
@@ -196,6 +230,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             try
             {
+                // Validação do tipo de serviço
                 if (ddlTipoServico.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -203,6 +238,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
+                // Validação do cliente
                 if (ddlCliente.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -210,9 +246,11 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
+                // Criação do objeto serviço
                 ModelServico servico =
                     new ModelServico();
 
+                // Preenchimento dos dados do serviço
                 servico.IdTipoServico =
                     Convert.ToInt32(
                         ddlTipoServico.SelectedValue
@@ -260,6 +298,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     Convert.ToInt32(
                         ddlCliente.SelectedValue
                     );
+
                 servico.VlServico =
                     string.IsNullOrWhiteSpace(
                         txtValorTotal.Text
@@ -273,11 +312,13 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 servico.DsServico =
                     txtObservacao.Text;
 
+                // Define o mecânico responsável
                 servico.IdMecanico =
-     Convert.ToInt32(
-         ddlMecanico.SelectedValue
-     );
+                    Convert.ToInt32(
+                        ddlMecanico.SelectedValue
+                    );
 
+                // Validação do mecânico
                 if (ddlMecanico.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -285,6 +326,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
+                // Salva o serviço no banco de dados
                 ControllerServico controller =
                     new ControllerServico();
 
@@ -292,6 +334,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     servico
                 );
 
+                // Exibe mensagem de sucesso
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "alert",
@@ -303,6 +346,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
             catch (Exception ex)
             {
+                // Exibe mensagem de erro
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "alert",
@@ -314,6 +358,9 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
         }
 
+        /// <summary>
+        /// Limpa todos os campos do formulário após o cadastro.
+        /// </summary>
         private void LimparCampos()
         {
             txtTitulo.Text = "";

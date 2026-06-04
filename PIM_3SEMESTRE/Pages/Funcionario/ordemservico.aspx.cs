@@ -5,23 +5,36 @@ using System.Web.UI.WebControls;
 
 namespace PIM_3SEMESTRE.Pages.Funcionario
 {
+    /// <summary>
+    /// Página responsável pelo gerenciamento das ordens de serviço.
+    /// Permite listar, buscar por CPF, visualizar detalhes,
+    /// atualizar status e excluir serviços.
+    /// </summary>
     public partial class ordemservico : System.Web.UI.Page
     {
+        // Instância do controller de serviços
         ControllerServico controller =
             new ControllerServico();
 
+        /// <summary>
+        /// Evento executado ao carregar a página.
+        /// </summary>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                // Carrega todas as ordens de serviço na GridView
                 CarregarServicos();
             }
         }
 
         // =========================================
-        // CARREGAR GRID
+        // CARREGAR GRID DE SERVIÇOS
         // =========================================
 
+        /// <summary>
+        /// Carrega todos os serviços cadastrados na GridView.
+        /// </summary>
         private void CarregarServicos()
         {
             gvServicos.DataSource =
@@ -31,15 +44,19 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         // =========================================
-        // BUSCAR POR CPF
+        // BUSCA DE SERVIÇOS POR CPF
         // =========================================
 
+        /// <summary>
+        /// Realiza busca de serviços pelo CPF do cliente.
+        /// </summary>
         protected void btnBuscar_Click(
             object sender,
             EventArgs e)
         {
             try
             {
+                // Captura e normaliza o CPF informado
                 string cpf =
                     txtBuscar.Text.Trim();
 
@@ -47,12 +64,14 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                          .Replace("-", "")
                          .Replace("/", "");
 
+                // Se não houver CPF, recarrega todos os registros
                 if (string.IsNullOrEmpty(cpf))
                 {
                     CarregarServicos();
                     return;
                 }
 
+                // Atualiza GridView com o resultado da busca
                 gvServicos.DataSource =
                     controller.BuscarServicoPorCpf(cpf);
 
@@ -60,6 +79,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
             catch (Exception ex)
             {
+                // Exibe erro caso ocorra falha na busca
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -69,30 +89,37 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         // =========================================
-        // SELECIONAR GRID
+        // SELEÇÃO DE SERVIÇO NA GRID
         // =========================================
 
+        /// <summary>
+        /// Evento executado ao selecionar uma ordem de serviço na GridView.
+        /// Carrega os detalhes completos do serviço.
+        /// </summary>
         protected void gvServicos_SelectedIndexChanged(
             object sender,
             EventArgs e)
         {
             try
             {
+                // Obtém o ID do serviço selecionado
                 int idServico =
                     Convert.ToInt32(
                         gvServicos.SelectedDataKey.Value
                     );
 
+                // Busca detalhes completos do serviço
                 MySqlDataReader dados =
                     controller.BuscarServico(idServico);
 
                 if (dados.Read())
                 {
+                    // Armazena o ID em campo oculto
                     hfIdServico.Value =
                         dados["id_servico"].ToString();
 
                     // =====================================
-                    // CABEÇALHO
+                    // DADOS DO CABEÇALHO
                     // =====================================
 
                     lblOS.Text =
@@ -105,7 +132,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                         dados["st_servico"].ToString();
 
                     // =====================================
-                    // VEÍCULO
+                    // DADOS DO VEÍCULO
                     // =====================================
 
                     lblModelo.Text =
@@ -124,7 +151,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                         dados["qt_quilometragem_veiculo_servico"].ToString();
 
                     // =====================================
-                    // SERVIÇO
+                    // DADOS DO SERVIÇO
                     // =====================================
 
                     lblTipoServico.Text =
@@ -134,14 +161,14 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                         dados["ds_servico"].ToString();
 
                     // =====================================
-                    // MECÂNICO
+                    // DADOS DO MECÂNICO
                     // =====================================
 
                     lblMecanico.Text =
                         dados["nm_mecanico"].ToString();
 
                     // =====================================
-                    // CLIENTE
+                    // DADOS DO CLIENTE
                     // =====================================
 
                     lblCliente.Text =
@@ -151,7 +178,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                         dados["cd_telefone_cliente"].ToString();
 
                     // =====================================
-                    // VALOR
+                    // VALOR DO SERVIÇO
                     // =====================================
 
                     lblValor.Text =
@@ -159,10 +186,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                             dados["vl_servico"]
                         ).ToString("C");
 
-                    // =====================================
-                    // STATUS
-                    // =====================================
-
+                    // Atualiza dropdown de status
                     ddlStatus.SelectedValue =
                         dados["st_servico"].ToString();
                 }
@@ -171,6 +195,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
             catch (Exception ex)
             {
+                // Exibe erro caso ocorra falha na seleção
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -180,22 +205,28 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         // =========================================
-        // EXCLUIR
+        // EXCLUSÃO DE SERVIÇO
         // =========================================
 
+        /// <summary>
+        /// Remove uma ordem de serviço da base de dados.
+        /// </summary>
         protected void gvServicos_RowDeleting(
             object sender,
             GridViewDeleteEventArgs e)
         {
             try
             {
+                // Obtém o ID do serviço selecionado
                 int idServico =
                     Convert.ToInt32(
                         gvServicos.DataKeys[e.RowIndex].Value
                     );
 
+                // Executa exclusão
                 controller.ExcluirServico(idServico);
 
+                // Mensagem de sucesso
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "msg",
@@ -203,10 +234,12 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     true
                 );
 
+                // Recarrega a grid
                 CarregarServicos();
             }
             catch (Exception ex)
             {
+                // Exibe erro caso falha na exclusão
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -216,15 +249,19 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         // =========================================
-        // ATUALIZAR STATUS
+        // ATUALIZAÇÃO DE STATUS
         // =========================================
 
+        /// <summary>
+        /// Atualiza o status da ordem de serviço selecionada.
+        /// </summary>
         protected void btnAtualizar_Click(
             object sender,
             EventArgs e)
         {
             try
             {
+                // Verifica se um serviço foi selecionado
                 if (string.IsNullOrEmpty(hfIdServico.Value))
                 {
                     ClientScript.RegisterStartupScript(
@@ -237,11 +274,13 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     return;
                 }
 
+                // Atualiza status no banco de dados
                 controller.AtualizarStatus(
                     Convert.ToInt32(hfIdServico.Value),
                     ddlStatus.SelectedValue
                 );
 
+                // Mensagem de sucesso
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "msg",
@@ -249,10 +288,12 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     true
                 );
 
+                // Atualiza grid
                 CarregarServicos();
             }
             catch (Exception ex)
             {
+                // Exibe erro caso falha na atualização
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +

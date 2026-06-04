@@ -91,11 +91,13 @@ namespace PIM_3SEMESTRE.Controllers
         #endregion
 
 
-        public MySqlDataReader ListarServicos()
+
+        #region listar serviço
+        public MySqlDataReader ListarServicos() //criando metodo de listar servicos
         {
             try
             {
-                Banco bd = new Banco();
+                Banco bd = new Banco(); //conexao com o banco 
 
                 string sql = @"
 
@@ -132,23 +134,26 @@ namespace PIM_3SEMESTRE.Controllers
 
                 ORDER BY s.id_servico DESC
 
-                ";
+                "; //executando comando do select
 
-                return bd.ConsultarSQL(sql);
+                return bd.ConsultarSQL(sql); //mandando consultar no banco
             }
-            catch (Exception ex)
+            catch (Exception ex) //mensagem de erro
             {
                 throw new Exception(
                     "Erro ao listar serviços. " +
                     ex.Message);
             }
         }
+        #endregion
 
-        public MySqlDataReader BuscarServico(int idServico)
+
+        #region buscar servico
+        public MySqlDataReader BuscarServico(int idServico) //criação do metodo de buscar serviço
         {
             try
             {
-                Banco bd = new Banco();
+                Banco bd = new Banco(); //conectando com a classe banco
 
                 string sql = @"
 
@@ -199,37 +204,38 @@ INNER JOIN usuario um
 
 WHERE s.id_servico = @idServico
 
-";
+"; //executando comando
 
                 List<MySqlParameter> parametros =
-                    new List<MySqlParameter>();
+                    new List<MySqlParameter>(); //listando parametro
 
                 parametros.Add(
                     new MySqlParameter(
                         "@idServico",
-                        idServico));
+                        idServico)); //adiconando parametro
 
                 return bd.ConsultarSQL(
                     sql,
-                    parametros);
+                    parametros);//adiconando parametro
             }
-            catch (Exception ex)
+            catch (Exception ex) //mensagem de erro
             {
                 throw new Exception(
                     "Erro ao buscar serviço. " +
                     ex.Message);
             }
         }
+        #endregion
 
 
-
+        #region atualizar status
         public void AtualizarStatus(
             int idServico,
-            string status)
+            string status) //criando metodo de atualizar status do servico
         {
             try
             {
-                Banco bd = new Banco();
+                Banco bd = new Banco(); //conectando ao banco de dados
 
                 string sql = @"
 
@@ -237,22 +243,22 @@ WHERE s.id_servico = @idServico
                 SET st_servico = @status
                 WHERE id_servico = @idServico
 
-                ";
+                "; //executando comando de update
 
                 List<MySqlParameter> parametros =
-                    new List<MySqlParameter>();
+                    new List<MySqlParameter>(); //listando parametros
 
                 parametros.Add(
                     new MySqlParameter(
                         "@status",
-                        status));
+                        status)); //adicionando parametro
 
                 parametros.Add(
                     new MySqlParameter(
                         "@idServico",
-                        idServico));
+                        idServico));//adicionando parametro
 
-                bd.Conectar();
+                bd.Conectar(); //conectando banco de dados
 
                 MySqlCommand cmd =
                     new MySqlCommand(
@@ -260,57 +266,64 @@ WHERE s.id_servico = @idServico
                         new MySqlConnection(
                             DadosConexao.GetConexao()
                         )
-                    );
+                    ); //mandando executar comando
 
-                cmd.Connection.Open();
+                cmd.Connection.Open(); //abrindo conexão
 
-                cmd.Parameters.Clear();
+                cmd.Parameters.Clear(); //limpando parametros
 
+                // Adiciona todos os parâmetros da lista ao comando SQL
                 foreach (MySqlParameter item in parametros)
                 {
                     cmd.Parameters.Add(item);
                 }
 
+                // Executa o comando UPDATE no banco de dados
                 cmd.ExecuteNonQuery();
 
+                // Fecha a conexão após a execução
                 cmd.Connection.Close();
             }
             catch (Exception ex)
             {
+                // Lança uma exceção personalizada informando o erro ocorrido
                 throw new Exception(
                     "Erro ao atualizar status. " +
                     ex.Message);
             }
         }
 
+        #endregion
 
-        public void ExcluirServico(int idServico)
+
+        #region excluir serviço
+        public void ExcluirServico(int idServico) //criando metodo de excluir serviço atraves do ID
         {
             try
             {
-                Banco bd = new Banco();
+                Banco bd = new Banco(); //conectando ao banco de dados
 
                 string sql = @"
 
                 DELETE FROM servico
                 WHERE id_servico = @idServico
 
-                ";
+                "; //executando comando
 
                 List<MySqlParameter> parametros =
-                    new List<MySqlParameter>();
+                    new List<MySqlParameter>(); //listando parametros
 
                 parametros.Add(
                     new MySqlParameter(
                         "@idServico",
-                        idServico));
+                        idServico));//adicionando parametro
 
                 MySqlConnection conexao =
                     new MySqlConnection(
                         DadosConexao.GetConexao()
-                    );
+                    ); //mandando executar o comando
 
-                conexao.Open();
+                conexao.Open(); //abrindo a conexao
 
                 MySqlCommand cmd =
                     new MySqlCommand(
@@ -328,7 +341,7 @@ WHERE s.id_servico = @idServico
 
                 conexao.Close();
             }
-            catch (Exception ex)
+            catch (Exception ex) //mensagem de erro
             {
                 throw new Exception(
                     "Erro ao excluir serviço. " +
@@ -336,7 +349,7 @@ WHERE s.id_servico = @idServico
             }
         }
 
-
+        #endregion
         public MySqlDataReader ListarTiposServico()
         {
             try

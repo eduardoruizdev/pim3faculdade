@@ -107,7 +107,7 @@ namespace PIM_3SEMESTRE.Pages.Login
                         if (tipoUsuario == "Administrador")
                         {
                             Response.Redirect(
-                                "~/Pages/Admin/dashboard.aspx"
+                                "~/Pages/ADM/cadastrarfuncionario.aspx"
                             );
                         }
                         else if (tipoUsuario == "Funcionario")
