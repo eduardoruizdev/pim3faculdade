@@ -24,36 +24,44 @@
 
     <aside class="sidebar">
 
-        <div>
-            <div class="logo">
-                <img src="../../img/logo.png" alt="Logo"/>
-            </div>
+     <div class="logo">
+         <img src="../../img/logoempresa.png"/>
+     </div>
 
-            <div class="menu-title">
-                MENU
-            </div>
+     <div class="menu-title">
+         CLIENTE
+     </div>
 
-            <nav class="menu">
+     <div class="menu">
 
-                <a href="#" class="menu-item">
-                    <i class='bx bx-home-alt'></i>
-                    <span>Painel do Cliente</span>
-                </a>
+         <a href="cadastrarfuncionario.aspx" class="active">
+             <i class="fa-solid fa-user-plus"></i>
+             Historico
+         </a>
+     </div>
 
-                <a href="#" class="menu-item active">
-                    <i class='bx bx-history'></i>
-                    <span>Histórico</span>
-                </a>
+     <div class="help-box">
 
-                <a href="#" class="menu-item">
-                    <i class='bx bx-user'></i>
-                    <span>Meus Dados</span>
-                </a>
+         <h3>Precisa de ajuda?</h3>
 
-            </nav>
-        </div>
+         <p>
+             Nossa equipe está pronta
+             para te atender.
+         </p>
 
-    </aside>
+         <button type="button" class="help-btn">
+             <i class="fa-solid fa-headset"></i>
+             Falar com a oficina
+         </button>
+
+     </div>
+
+     <a href="../Login/login.aspx" class="logout">
+         <i class="fa-solid fa-arrow-right-from-bracket"></i>
+         Sair da conta
+     </a>
+
+ </aside>
 
     <!-- MAIN -->
     <main class="main-content">
