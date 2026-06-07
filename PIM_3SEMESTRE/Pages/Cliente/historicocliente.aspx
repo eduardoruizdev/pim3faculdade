@@ -80,12 +80,41 @@
         </section>
 
         <!-- FILTROS -->
-        <div class="filters">
-            <button type="button" class="filter-btn active-filter">Todos</button>
-            <button type="button" class="filter-btn">Em andamento</button>
-            <button type="button" class="filter-btn">Concluídos</button>
-            <button type="button" class="filter-btn">Cancelados</button>
-        </div>
+ <div class="filters">
+
+    <asp:LinkButton
+        ID="btnTodos"
+        runat="server"
+        CssClass="filter-btn active-filter"
+        OnClick="btnTodos_Click">
+        Todos
+    </asp:LinkButton>
+
+    <asp:LinkButton
+        ID="btnAndamento"
+        runat="server"
+        CssClass="filter-btn"
+        OnClick="btnAndamento_Click">
+        Em andamento
+    </asp:LinkButton>
+
+    <asp:LinkButton
+        ID="btnConcluidos"
+        runat="server"
+        CssClass="filter-btn"
+        OnClick="btnConcluidos_Click">
+        Concluídos
+    </asp:LinkButton>
+
+    <asp:LinkButton
+        ID="btnCancelados"
+        runat="server"
+        CssClass="filter-btn"
+        OnClick="btnCancelados_Click">
+        Cancelados
+    </asp:LinkButton>
+
+</div>
 
         <!-- ========================= -->
         <!-- REPEATER DINÂMICO -->

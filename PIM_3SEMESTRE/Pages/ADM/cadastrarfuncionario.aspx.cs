@@ -2,192 +2,258 @@
 using PIM_3SEMESTRE.Models;
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace PIM_3SEMESTRE.Pages.ADM
 {
-    /// <summary>
-    /// Página responsável pelo cadastro de funcionários do sistema.
-    /// Permite cadastrar administradores, atendentes e mecânicos.
-    /// </summary>
-    public partial class cadastrarfuncionario : System.Web.UI.Page
+    public partial class cadastrarfuncionario :
+        System.Web.UI.Page
     {
-        /// <summary>
-        /// Evento executado ao carregar a página.
-        /// </summary>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(
+            object sender,
+            EventArgs e)
         {
-            // Nenhuma ação necessária no carregamento da página
+            if (!IsPostBack)
+            {
+                CarregarFuncionarios();
+            }
         }
 
-        /// <summary>
-        /// Evento disparado ao clicar no botão Cadastrar.
-        /// Realiza validações e efetua o cadastro do funcionário.
-        /// </summary>
-        protected void btnCadastrar_Click(object sender, EventArgs e)
+        // =====================================
+        // CADASTRAR
+        // =====================================
+
+        protected void btnCadastrar_Click(
+            object sender,
+            EventArgs e)
         {
             try
             {
-                #region Validações
+                // VALIDAÇÕES
 
-                // Verifica se o campo nome foi preenchido
-                if (string.IsNullOrWhiteSpace(txtNome.Text))
+                if (string.IsNullOrWhiteSpace(
+                    txtNome.Text))
                 {
-                    ExibirMensagem("Digite o nome.");
+                    ExibirMensagem(
+                        "Digite o nome."
+                    );
+
                     return;
                 }
 
-                // Verifica se o campo e-mail foi preenchido
-                if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                if (string.IsNullOrWhiteSpace(
+                    txtEmail.Text))
                 {
-                    ExibirMensagem("Digite o email.");
+                    ExibirMensagem(
+                        "Digite o email."
+                    );
+
                     return;
                 }
 
-                // Verifica se o campo senha foi preenchido
-                if (string.IsNullOrWhiteSpace(txtSenha.Text))
+                if (string.IsNullOrWhiteSpace(
+                    txtSenha.Text))
                 {
-                    ExibirMensagem("Digite a senha.");
+                    ExibirMensagem(
+                        "Digite a senha."
+                    );
+
                     return;
                 }
 
-                // Verifica se o tipo de usuário foi selecionado
                 if (string.IsNullOrWhiteSpace(
                     ddlTipoUsuario.SelectedValue))
                 {
                     ExibirMensagem(
-                        "Selecione o tipo de usuário.");
+                        "Selecione o tipo de usuário."
+                    );
+
                     return;
                 }
 
-                #endregion
-
-                #region Controller de Usuário
-
-                // Instancia o controller responsável pelos usuários
                 UsuarioController usuarioController =
-                new UsuarioController();
+                    new UsuarioController();
 
-                #endregion
+                // VERIFICA EMAIL
 
-                #region Verificar E-mail
-
-                // Verifica se já existe um usuário com o mesmo e-mail
                 bool emailExiste =
-                usuarioController.VerificarEmailExiste(
-                    txtEmail.Text
-                );
+                    usuarioController.VerificarEmailExiste(
+                        txtEmail.Text
+                    );
 
                 if (emailExiste)
                 {
                     ExibirMensagem(
-                        "Este email já está cadastrado.");
+                        "Este email já está cadastrado."
+                    );
+
                     return;
                 }
 
-                #endregion
+                // CRIA USUÁRIO
 
-                #region Criar Objeto Usuário
-
-                // Cria objeto usuário para armazenar os dados informados
                 UsuarioModel usuario =
-                new UsuarioModel();
+                    new UsuarioModel();
 
                 usuario.NomeUsuario =
-                txtNome.Text;
+                    txtNome.Text;
 
                 usuario.EmailUsuario =
-                txtEmail.Text;
+                    txtEmail.Text;
 
                 usuario.SenhaUsuario =
-                txtSenha.Text;
+                    txtSenha.Text;
 
                 usuario.IdTipoUsuario =
-                Convert.ToInt32(
-                    ddlTipoUsuario.SelectedValue
-                );
+                    Convert.ToInt32(
+                        ddlTipoUsuario.SelectedValue
+                    );
 
-                #endregion
-
-                #region Cadastrar Usuário
-
-                // Salva o usuário no banco de dados
                 int idUsuario =
-                usuarioController.CadastrarUsuario(
-                    usuario
-                );
+                    usuarioController.CadastrarUsuario(
+                        usuario
+                    );
 
-                #endregion
+                // CADASTRO MECÂNICO
 
-                #region Cadastro de Mecânico
-
-                // Caso o tipo selecionado seja Mecânico (ID = 3)
                 if (ddlTipoUsuario.SelectedValue == "3")
                 {
-                    // Cria objeto mecânico
                     MecanicoModel mecanico =
-                    new MecanicoModel();
+                        new MecanicoModel();
 
-                    // Vincula o mecânico ao usuário recém-cadastrado
                     mecanico.IdUsuario =
-                    idUsuario;
+                        idUsuario;
 
-                    // Define a especialidade do mecânico
                     mecanico.EspecialidadeMecanico =
-                    txtEspecialidade.Text;
+                        txtEspecialidade.Text;
 
-                    // Define observações adicionais
                     mecanico.ObservacaoMecanico =
-                    txtObservacao.Text;
+                        txtObservacao.Text;
 
-                    // Instancia o controller de mecânicos
                     MecanicoController mecanicoController =
-                    new MecanicoController();
+                        new MecanicoController();
 
-                    // Realiza o cadastro do mecânico
                     mecanicoController.CadastrarMecanico(
                         mecanico
                     );
                 }
 
-                #endregion
+                // LIMPAR CAMPOS
 
-                #region Limpar Campos
-
-                // Limpa os campos do formulário após o cadastro
                 txtNome.Text = "";
                 txtEmail.Text = "";
                 txtSenha.Text = "";
                 txtEspecialidade.Text = "";
                 txtObservacao.Text = "";
+
                 ddlTipoUsuario.SelectedIndex = 0;
 
-                #endregion
+                // RECARREGA GRID
 
-                #region Mensagem de Sucesso
+                CarregarFuncionarios();
 
-                // Exibe mensagem de confirmação
                 ExibirMensagem(
                     "Usuário cadastrado com sucesso!"
                 );
-
-                #endregion
             }
             catch (Exception ex)
             {
-                // Exibe mensagem de erro caso ocorra alguma exceção
                 ExibirMensagem(
                     "Erro: " + ex.Message
                 );
             }
         }
 
-        /// <summary>
-        /// Exibe uma mensagem na tela utilizando JavaScript.
-        /// </summary>
-        /// <param name="mensagem">
-        /// Texto da mensagem a ser exibida.
-        /// </param>
-        private void ExibirMensagem(string mensagem)
+        // =====================================
+        // LISTAR FUNCIONÁRIOS
+        // =====================================
+
+        private void CarregarFuncionarios()
+        {
+            try
+            {
+                UsuarioController controller =
+                    new UsuarioController();
+
+                gvFuncionarios.DataSource =
+                    controller.ListarFuncionarios();
+
+                gvFuncionarios.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ExibirMensagem(
+                    "Erro ao carregar funcionários: "
+                    + ex.Message
+                );
+            }
+        }
+
+        // =====================================
+        // EXCLUIR
+        // =====================================
+
+        protected void gvFuncionarios_RowDeleting(
+            object sender,
+            GridViewDeleteEventArgs e)
+        {
+            try
+            {
+                int idUsuario =
+                    Convert.ToInt32(
+                        gvFuncionarios.DataKeys[
+                            e.RowIndex
+                        ].Value
+                    );
+
+                UsuarioController controller =
+                    new UsuarioController();
+
+                controller.ExcluirUsuario(
+                    idUsuario
+                );
+
+                ExibirMensagem(
+                    "Usuário excluído com sucesso!"
+                );
+
+                CarregarFuncionarios();
+            }
+            catch (Exception ex)
+            {
+                ExibirMensagem(
+                    "Erro ao excluir usuário: "
+                    + ex.Message
+                );
+            }
+        }
+
+        // =====================================
+        // CONFIRMAÇÃO EXCLUIR
+        // =====================================
+
+        protected void gvFuncionarios_RowDataBound(
+            object sender,
+            GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType ==
+                DataControlRowType.DataRow)
+            {
+                LinkButton btnExcluir =
+                    (LinkButton)e.Row.Cells[4]
+                    .Controls[0];
+
+                btnExcluir.OnClientClick =
+                    "return confirm('Deseja realmente excluir este usuário?');";
+            }
+        }
+
+        // =====================================
+        // ALERTA
+        // =====================================
+
+        private void ExibirMensagem(
+            string mensagem)
         {
             ScriptManager.RegisterStartupScript(
                 this,

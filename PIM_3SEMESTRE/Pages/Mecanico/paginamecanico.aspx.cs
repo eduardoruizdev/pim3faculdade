@@ -28,16 +28,13 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
         /// <summary>
         /// Evento de carregamento da página
         /// </summary>
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(
+            object sender,
+            EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                // Valida se o usuário está logado
-                ValidarLogin();
+            ValidarLogin();
 
-                // Carrega os serviços do mecânico
-                CarregarServicos();
-            }
+            CarregarServicos();
         }
 
         /// <summary>
@@ -47,91 +44,139 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
         {
             if (Session["id_usuario"] == null)
             {
-                // Se não estiver logado, redireciona para login
                 Response.Redirect(
-                    "~/Pages/Login/login.aspx");
+                    "~/Pages/Login/login.aspx"
+                );
             }
         }
 
         /// <summary>
-        /// Carrega todas as ordens de serviço do mecânico logado
-        /// e monta os cards e detalhes em HTML dinâmico
+        /// Carrega os serviços do mecânico
         /// </summary>
         private void CarregarServicos()
         {
             try
             {
-                // Recupera ID do usuário logado na sessão
                 int idUsuario =
                     Convert.ToInt32(
-                        Session["id_usuario"]);
+                        Session["id_usuario"]
+                    );
 
-                // StringBuilder para montar HTML dos cards
                 StringBuilder html =
                     new StringBuilder();
 
-                // Busca serviços do mecânico no banco
                 MySqlDataReader dados =
                     controller.ListarServicosMecanico(
-                        idUsuario);
+                        idUsuario
+                    );
 
                 int idSelecionado = 0;
 
-                // Verifica se foi passado ID na URL (query string)
+                // =========================================
+                // PEGA ID DA URL COM SEGURANÇA
+                // =========================================
+
                 if (!string.IsNullOrEmpty(
                     Request.QueryString["id"]))
                 {
-                    idSelecionado =
-                        Convert.ToInt32(
-                            Request.QueryString["id"]);
+                    int.TryParse(
+                        Request.QueryString["id"],
+                        out idSelecionado
+                    );
                 }
 
-                // Percorre todos os serviços retornados
+                // =========================================
+                // PERCORRE SERVIÇOS
+                // =========================================
+
                 while (dados.Read())
                 {
-                    // Nome do mecânico (vem do banco)
                     nomeMecanico =
-                        dados["nm_mecanico"].ToString();
+                        dados["nm_mecanico"]
+                        .ToString();
 
                     int idServico =
                         Convert.ToInt32(
-                            dados["id_servico"]);
+                            dados["id_servico"]
+                        );
 
-                    // Se não houver serviço selecionado na URL,
-                    // seleciona o primeiro automaticamente
+                    // Se nenhum serviço estiver selecionado
                     if (idSelecionado == 0)
                     {
-                        idSelecionado = idServico;
+                        idSelecionado =
+                            idServico;
                     }
 
-                    // Status do serviço
                     string status =
-                        dados["st_servico"].ToString();
+                        dados["st_servico"]
+                        .ToString();
 
-                    // Define classe CSS baseada no status
-                    string classeStatus = "";
+                    string classeStatus =
+                        "aguardando";
 
                     if (status == "Em andamento")
                     {
-                        classeStatus = "andamento";
+                        classeStatus =
+                            "andamento";
                     }
-                    else if (status == "Concluído")
+                    else if (
+                        status == "Concluído")
                     {
-                        classeStatus = "concluido";
-                    }
-                    else
-                    {
-                        classeStatus = "aguardando";
+                        classeStatus =
+                            "concluido";
                     }
 
-                    // Verifica se o card está ativo
                     bool ativo =
-                        idSelecionado == idServico;
+                        idSelecionado ==
+                        idServico;
 
                     // =========================================
-                    // CRIAÇÃO DO CARD DO SERVIÇO
+                    // DATAS SEGURAS
                     // =========================================
+
+                    string dataEntrada =
+                        dados["dt_cadastro_servico"]
+                        != DBNull.Value
+                        ?
+                        Convert.ToDateTime(
+                            dados[
+                                "dt_cadastro_servico"])
+                            .ToString("dd/MM/yyyy")
+                        :
+                        "Sem data";
+
+                    string dataPrevisao =
+                        dados[
+                            "dt_prevista_entrega_servico"]
+                        != DBNull.Value
+                        ?
+                        Convert.ToDateTime(
+                            dados[
+                                "dt_prevista_entrega_servico"])
+                            .ToString("dd/MM/yyyy")
+                        :
+                        "Sem previsão";
+
+                    // =========================================
+                    // VALOR SEGURO
+                    // =========================================
+
+                    string valorServico =
+                        dados["vl_servico"]
+                        != DBNull.Value
+                        ?
+                        Convert.ToDecimal(
+                            dados["vl_servico"])
+                            .ToString("N2")
+                        :
+                        "0,00";
+
+                    // =========================================
+                    // CARD DO SERVIÇO
+                    // =========================================
+
                     html.Append($@"
+
 <a href='paginamecanico.aspx?id={idServico}'
    class='order-card {(ativo ? "active-card" : "")}'>
 
@@ -170,17 +215,13 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
         <span>
             <i class='fa-regular fa-calendar'></i>
             Entrada:
-            {Convert.ToDateTime(
-                dados["dt_cadastro_servico"])
-                .ToString("dd/MM/yyyy")}
+            {dataEntrada}
         </span>
 
         <span>
             <i class='fa-regular fa-clock'></i>
             Previsão:
-            {Convert.ToDateTime(
-                dados["dt_prevista_entrega_servico"])
-                .ToString("dd/MM/yyyy")}
+            {dataPrevisao}
         </span>
 
     </div>
@@ -190,11 +231,13 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
     </div>
 
 </a>
+
 ");
 
                     // =========================================
-                    // DETALHES DO SERVIÇO SELECIONADO
+                    // DETALHES DO SERVIÇO
                     // =========================================
+
                     if (idSelecionado == idServico)
                     {
                         detalhesServico = $@"
@@ -229,11 +272,13 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
             </h4>
 
             <p>
-                Placa: {dados["cd_placa_veiculo_servico"]}
+                Placa:
+                {dados["cd_placa_veiculo_servico"]}
             </p>
 
             <p>
-                Cor: {dados["nm_cor_veiculo_servico"]}
+                Cor:
+                {dados["nm_cor_veiculo_servico"]}
             </p>
 
         </div>
@@ -244,47 +289,68 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
 <div class='section'>
 
-    <h3>Informações do serviço</h3>
+    <h3>
+        Informações do serviço
+    </h3>
 
     <div class='service-info'>
 
-        <p><strong>Serviço solicitado</strong></p>
-        <span>{dados["nm_titulo_servico"]}</span>
+        <p>
+            <strong>
+                Serviço solicitado
+            </strong>
+        </p>
 
-        <p><strong>Descrição</strong></p>
-        <span>{dados["ds_servico"]}</span>
+        <span>
+            {dados["nm_titulo_servico"]}
+        </span>
+
+        <p>
+            <strong>
+                Descrição
+            </strong>
+        </p>
+
+        <span>
+            {dados["ds_servico"]}
+        </span>
 
     </div>
 
     <div class='dates'>
+
         <div>
             <i class='fa-regular fa-calendar'></i>
             Entrada
         </div>
+
         <span>
-            {Convert.ToDateTime(
-                dados["dt_cadastro_servico"])
-                .ToString("dd/MM/yyyy")}
+            {dataEntrada}
         </span>
+
     </div>
 
     <div class='dates'>
+
         <div>
             <i class='fa-regular fa-clock'></i>
             Previsão
         </div>
+
         <span>
-            {Convert.ToDateTime(
-                dados["dt_prevista_entrega_servico"])
-                .ToString("dd/MM/yyyy")}
+            {dataPrevisao}
         </span>
+
     </div>
 
 </div>
 
 <div class='section'>
 
-    <h3>Cliente</h3>
+    <h3>
+        Cliente
+    </h3>
+
     <p class='obs'>
         {dados["nm_cliente"]}
     </p>
@@ -293,36 +359,40 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
 <div class='section'>
 
-    <h3>Valor do Serviço</h3>
+    <h3>
+        Valor do Serviço
+    </h3>
+
     <p class='obs'>
-        R$ {Convert.ToDecimal(
-            dados["vl_servico"])
-            .ToString("N2")}
+        R$ {valorServico}
     </p>
 
 </div>
 
-<button class='details-btn' type='button'>
+<button class='details-btn'
+        type='button'>
+
     Ver detalhes completos
+
 </button>
 
 ";
                     }
                 }
 
-                // Converte HTML final para ser exibido na página
-                cardsServicos = html.ToString();
+                cardsServicos =
+                    html.ToString();
 
-                // Fecha o reader
                 dados.Close();
             }
             catch (Exception ex)
             {
-                // Exibe erro caso algo falhe
                 Response.Write(
                     "<script>alert('Erro: " +
-                    ex.Message.Replace("'", "") +
-                    "');</script>");
+                    ex.Message
+                    .Replace("'", "") +
+                    "');</script>"
+                );
             }
         }
     }

@@ -302,6 +302,49 @@ body {
     z-index: 999999999 !important;
 }
 
+.table-container {
+    margin-top: 40px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.table-funcionarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .table-funcionarios th {
+        background: #111827;
+        color: #fff;
+        padding: 14px;
+        text-align: left;
+    }
+
+    .table-funcionarios td {
+        padding: 14px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table-funcionarios tr:hover {
+        background: #f9fafb;
+    }
+
+    .table-funcionarios a {
+        background: #dc2626;
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+        .table-funcionarios a:hover {
+            opacity: 0.9;
+        }
+
 /* =========================================
    RESPONSIVIDADE
 ========================================= */
@@ -572,4 +615,94 @@ body {
     .form-grid {
         gap: 30px;
     }
+}
+
+/* =========================================
+   RESPONSIVIDADE DA TABELA
+========================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-funcionarios {
+    min-width: 700px;
+}
+
+/* TABLET */
+@media screen and (max-width:768px) {
+
+    .table-container {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .table-funcionarios th {
+        padding: 12px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    .table-funcionarios td {
+        padding: 12px;
+        font-size: 0.88rem;
+        white-space: nowrap;
+    }
+
+    .table-funcionarios a {
+        padding: 7px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* CELULAR */
+@media screen and (max-width:576px) {
+
+    .table-container {
+        padding: 14px;
+        margin-top: 25px;
+    }
+
+    .table-funcionarios {
+        min-width: 600px;
+    }
+
+        .table-funcionarios th {
+            padding: 10px;
+            font-size: 0.82rem;
+        }
+
+        .table-funcionarios td {
+            padding: 10px;
+            font-size: 0.8rem;
+        }
+
+        .table-funcionarios a {
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            border-radius: 6px;
+        }
+}
+
+/* CELULARES PEQUENOS */
+@media screen and (max-width:375px) {
+
+    .table-funcionarios {
+        min-width: 550px;
+    }
+
+        .table-funcionarios th {
+            font-size: 0.75rem;
+        }
+
+        .table-funcionarios td {
+            font-size: 0.74rem;
+        }
+
+        .table-funcionarios a {
+            font-size: 0.72rem;
+            padding: 5px 8px;
+        }
 }

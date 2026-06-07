@@ -78,6 +78,15 @@ namespace PIM_3SEMESTRE.Pages.ADM
         protected global::System.Web.UI.WebControls.TextBox txtObservacao;
 
         /// <summary>
+        /// Controle gvFuncionarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvFuncionarios;
+
+        /// <summary>
         /// Controle btnCadastrar.
         /// </summary>
         /// <remarks>

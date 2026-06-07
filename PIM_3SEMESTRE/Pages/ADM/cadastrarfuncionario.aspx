@@ -205,8 +205,46 @@
                             </asp:TextBox>
 
                         </div>
+                        <!-- LISTA DE FUNCIONÁRIOS -->
+<div class="table-container">
 
-                    </div>
+    <asp:GridView
+        ID="gvFuncionarios"
+        runat="server"
+        AutoGenerateColumns="False"
+        CssClass="table-funcionarios"
+        DataKeyNames="id_usuario"
+        OnRowDeleting="gvFuncionarios_RowDeleting"
+        OnRowDataBound="gvFuncionarios_RowDataBound">
+
+        <Columns>
+
+            <asp:BoundField
+                DataField="id_usuario"
+                HeaderText="ID" />
+
+            <asp:BoundField
+                DataField="nm_usuario"
+                HeaderText="Nome" />
+
+            <asp:BoundField
+                DataField="nm_email_usuario"
+                HeaderText="Email" />
+
+            <asp:BoundField
+                DataField="nm_tipo_usuario"
+                HeaderText="Tipo" />
+
+            <asp:CommandField
+                ShowDeleteButton="True"
+                DeleteText="Excluir"
+                ControlStyle-CssClass="btn-excluir" />
+
+        </Columns>
+
+    </asp:GridView>
+
+</div>
 
                     <!-- BOTÃO -->
                     <div class="btn-area">

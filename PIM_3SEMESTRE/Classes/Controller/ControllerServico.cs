@@ -726,5 +726,84 @@ ORDER BY s.id_servico DESC
                 );
             }
         }
+        public MySqlDataReader ListarServicosClientePorStatus(
+    int idUsuario,
+    string status)
+        {
+            try
+            {
+                Banco bd = new Banco();
+
+                string sql = @"
+
+SELECT
+    s.id_servico,
+    s.nm_titulo_servico,
+    s.ds_servico_resumido,
+    s.dt_cadastro_servico,
+    s.dt_prevista_entrega_servico,
+    s.ds_prioridade_servico,
+    s.cd_placa_veiculo_servico,
+    s.nm_modelo_veiculo_servico,
+    s.cd_ano_veiculo_servico,
+    s.nm_cor_veiculo_servico,
+    s.qt_quilometragem_veiculo_servico,
+    s.vl_servico,
+    s.ds_servico,
+    s.st_servico,
+
+    ts.nm_tipo_servico,
+
+    um.nm_usuario AS nm_mecanico
+
+FROM servico s
+
+INNER JOIN cliente c
+    ON s.id_cliente = c.id_cliente
+
+INNER JOIN usuario u
+    ON c.id_usuario = u.id_usuario
+
+INNER JOIN tipo_servico ts
+    ON s.id_tipo_servico = ts.id_tipo_servico
+
+INNER JOIN mecanico m
+    ON s.id_mecanico = m.id_mecanico
+
+INNER JOIN usuario um
+    ON m.id_usuario = um.id_usuario
+
+WHERE u.id_usuario = @idUsuario
+AND s.st_servico = @status
+
+ORDER BY s.id_servico DESC
+
+";
+
+                List<MySqlParameter> parametros =
+                    new List<MySqlParameter>();
+
+                parametros.Add(
+                    new MySqlParameter(
+                        "@idUsuario",
+                        idUsuario));
+
+                parametros.Add(
+                    new MySqlParameter(
+                        "@status",
+                        status));
+
+                return bd.ConsultarSQL(
+                    sql,
+                    parametros);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "Erro ao filtrar histórico do cliente. " +
+                    ex.Message);
+            }
+        }
+
     }
 }

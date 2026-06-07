@@ -6,7 +6,7 @@
 <head runat="server">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AutoTech - Painel do Mecânico</title>
 
 <link rel="stylesheet" href="../../css/mecanico/paginamecanico.css"/>
@@ -52,15 +52,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
                     Ordem de Serviço
 
                 </a>
-
-                <a href="#" class="menu-item">
-
-                    <i class="fa-regular fa-user"></i>
-
-                    Meu Perfil
-
-                </a>
-
             </nav>
 
         </div>
