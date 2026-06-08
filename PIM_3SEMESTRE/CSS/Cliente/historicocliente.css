@@ -67,6 +67,15 @@ body {
     display: flex;
 }
 
+[vw] {
+    z-index: 999999999 !important;
+    position: fixed !important;
+}
+
+[vw-access-button] {
+    z-index: 999999999 !important;
+}
+
 /* =========================================
    SIDEBAR
 ========================================= */

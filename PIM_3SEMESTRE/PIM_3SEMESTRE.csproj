@@ -150,6 +150,7 @@
     <Compile Include="Classes\Controller\UsuarioController.cs" />
     <Compile Include="Classes\DataBase\Banco.cs" />
     <Compile Include="Classes\Models\ClienteModel.cs" />
+    <Compile Include="Classes\Models\Logger.cs" />
     <Compile Include="Classes\Models\MecanicoModel.cs" />
     <Compile Include="Classes\Models\ModelServico.cs" />
     <Compile Include="Classes\Models\TipoServicoModel.cs" />
@@ -229,7 +230,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Classes\Logs\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

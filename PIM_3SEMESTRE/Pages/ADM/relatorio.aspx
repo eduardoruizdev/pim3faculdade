@@ -5,23 +5,15 @@ Inherits="PIM_3SEMESTRE.Pages.ADM.relatorio" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head runat="server">
 
-<meta http-equiv="Content-Type"
-content="text/html; charset=utf-8"/>
+    <title>Relatórios - Auto Tech</title>
 
-<title>Relatórios</title>
+<link href="../../css/Adm/relatorio.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../../css/Adm/relatorio.css"
-rel="stylesheet"/>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
-<link href=
-"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-rel="stylesheet"/>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
 </head>
 
@@ -29,184 +21,311 @@ rel="stylesheet"/>
 
 <form id="form1" runat="server">
 
+<div class="container">
 
-  <div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-       <!-- SIDEBAR -->
-  <aside class="sidebar">
+        <div class="logo">
+            <img src="../../img/logoempresa.png"/>
+        </div>
 
-      <div class="logo">
-          <img src="../../img/logoempresa.png"/>
-      </div>
+        <div class="menu-title">
+            ADMINISTRADOR
+        </div>
 
-      <div class="menu-title">
-          ADMINISTRADOR
-      </div>
+        <div class="menu">
 
-      <div class="menu">
+            <a href="cadastrarfuncionario.aspx">
+                <i class="fa-solid fa-user-plus"></i>
+                Cadastrar Funcionário
+            </a>
 
-          <a href="cadastrarfuncionario.aspx" class="active">
-              <i class="fa-solid fa-user-plus"></i>
-              Cadastrar Funcionário
-          </a>
+            <a href="cadastrarServico.aspx">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                Cadastrar Tipo Serviço
+            </a>
 
-          <a href="cadastrarServico.aspx">
-              <i class="fa-solid fa-users"></i>
-              Cadastrar Tipo Serviço
-          </a>
+            <a href="relatorio.aspx" class="active">
+                <i class="fa-solid fa-chart-column"></i>
+                Relatórios
+            </a>
 
-          <a href="relatorio.aspx">
-              <i class="fa-solid fa-screwdriver-wrench"></i>
-              Relatorio
-          </a>
+        </div>
 
-      </div>
+        <div class="help-box">
 
-      <div class="help-box">
+            <h3>Precisa de ajuda?</h3>
 
-          <h3>Precisa de ajuda?</h3>
+            <p>
+                Nossa equipe está pronta
+                para te atender.
+            </p>
 
-          <p>
-              Nossa equipe está pronta
-              para te atender.
-          </p>
+            <button type="button">
+                <i class="fa-solid fa-headset"></i>
+                Falar com a oficina
+            </button>
 
-          <button type="button" class="help-btn">
-              <i class="fa-solid fa-headset"></i>
-              Falar com a oficina
-          </button>
+        </div>
 
-      </div>
+        <a href="../Login/login.aspx" class="logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Sair da conta
+        </a>
 
-      <a href="../Login/login.aspx" class="logout">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          Sair da conta
-      </a>
+    </aside>
 
-  </aside>
+    <!-- CONTEUDO -->
+    <main class="content">
 
+        <div class="topo">
 
-<main class="content">
+            <h1>
+                Dashboard Inteligente
+            </h1>
 
-<div class="topo">
+            <p>
+                Machine Learning e Análise de Dados
+            </p>
 
-<h1>Dashboard da Oficina</h1>
+        </div>
 
-</div>
+        <!-- CARDS -->
+        <div class="cards">
 
-<!-- CARDS -->
+            <div class="card">
+                <i class="fa-solid fa-users"></i>
 
-<div class="cards">
+                <div>
+                    <span>Clientes</span>
 
-<div class="card">
+                    <asp:Label
+                        ID="lblClientes"
+                        runat="server"
+                        CssClass="numero"/>
+                </div>
+            </div>
 
-<h2>Total Clientes</h2>
+            <div class="card">
+                <i class="fa-solid fa-user-gear"></i>
 
-<asp:Label
-ID="lblClientes"
-runat="server"
-CssClass="numero"/>
+                <div>
+                    <span>Mecânicos</span>
 
-</div>
+                    <asp:Label
+                        ID="lblMecanicos"
+                        runat="server"
+                        CssClass="numero"/>
+                </div>
+            </div>
 
-<div class="card">
+            <div class="card">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
 
-<h2>Total Mecânicos</h2>
+                <div>
+                    <span>Serviços</span>
 
-<asp:Label
-ID="lblMecanicos"
-runat="server"
-CssClass="numero"/>
+                    <asp:Label
+                        ID="lblServicos"
+                        runat="server"
+                        CssClass="numero"/>
+                </div>
+            </div>
 
-</div>
+            <div class="card">
+                <i class="fa-solid fa-dollar-sign"></i>
 
-<div class="card">
+                <div>
+                    <span>Faturamento</span>
 
-<h2>Total Serviços</h2>
+                    <asp:Label
+                        ID="lblValor"
+                        runat="server"
+                        CssClass="numero"/>
+                </div>
+            </div>
 
-<asp:Label
-ID="lblServicos"
-runat="server"
-CssClass="numero"/>
+        </div>
 
-</div>
+        <!-- RELATORIO PRODUTIVIDADE -->
+        <div class="box">
 
-<div class="card">
+            <h2>
+                Relatório Mensal de Produtividade
+            </h2>
 
-<h2>Valor Total</h2>
+            <asp:GridView
+                ID="gvProdutividade"
+                runat="server"
+                AutoGenerateColumns="False"
+                CssClass="tabela">
 
-<asp:Label
-ID="lblValor"
-runat="server"
-CssClass="numero"/>
+                <Columns>
 
-</div>
+                    <asp:BoundField
+                        DataField="mes"
+                        HeaderText="Mês"/>
 
-</div>
+                    <asp:BoundField
+                        DataField="total_os"
+                        HeaderText="OS Concluídas"/>
 
-<!-- TABELA -->
+                    <asp:BoundField
+                        DataField="faturamento"
+                        HeaderText="Faturamento"/>
 
-<div class="tabela-box">
+                    <asp:BoundField
+                        DataField="tempo_medio"
+                        HeaderText="Tempo Médio"/>
 
-<h2>Últimos Serviços</h2>
+                </Columns>
 
-<asp:GridView
-ID="gvServicos"
-runat="server"
-AutoGenerateColumns="False"
-CssClass="tabela">
+            </asp:GridView>
 
-<Columns>
+        </div>
 
-<asp:BoundField
-DataField="id_servico"
-HeaderText="ID"/>
+        <!-- SERVICOS -->
+        <div class="box">
 
-<asp:BoundField
-DataField="nm_tipo_servico"
-HeaderText="Tipo"/>
+            <h2>
+                Ranking dos Serviços Mais Realizados
+            </h2>
 
-<asp:BoundField
-DataField="cliente"
-HeaderText="Cliente"/>
+            <asp:GridView
+                ID="gvRankingServicos"
+                runat="server"
+                AutoGenerateColumns="False"
+                CssClass="tabela">
 
-<asp:BoundField
-DataField="mecanico"
-HeaderText="Mecânico"/>
+                <Columns>
 
-<asp:BoundField
-DataField="st_servico"
-HeaderText="Status"/>
+                    <asp:BoundField
+                        DataField="nm_tipo_servico"
+                        HeaderText="Tipo Serviço"/>
 
-<asp:BoundField
-DataField="vl_servico"
-HeaderText="Valor"/>
+                    <asp:BoundField
+                        DataField="quantidade"
+                        HeaderText="Quantidade"/>
 
-</Columns>
+                </Columns>
 
-</asp:GridView>
+            </asp:GridView>
 
-</div>
+        </div>
 
-</main>
+        <!-- CLIENTES -->
+        <div class="box">
+
+            <h2>
+                Clientes Recorrentes
+            </h2>
+
+            <asp:GridView
+                ID="gvClientes"
+                runat="server"
+                AutoGenerateColumns="False"
+                CssClass="tabela">
+
+                <Columns>
+
+                    <asp:BoundField
+                        DataField="cliente"
+                        HeaderText="Cliente"/>
+
+                    <asp:BoundField
+                        DataField="quantidade"
+                        HeaderText="Quantidade de Serviços"/>
+
+                    <asp:BoundField
+                        DataField="total_gasto"
+                        HeaderText="Total Gasto"/>
+
+                </Columns>
+
+            </asp:GridView>
+
+        </div>
+
+        <!-- MECANICOS -->
+        <div class="box">
+
+            <h2>
+                Ranking de Mecânicos
+            </h2>
+
+            <asp:GridView
+                ID="gvMecanicos"
+                runat="server"
+                AutoGenerateColumns="False"
+                CssClass="tabela">
+
+                <Columns>
+
+                    <asp:BoundField
+                        DataField="mecanico"
+                        HeaderText="Mecânico"/>
+
+                    <asp:BoundField
+                        DataField="quantidade"
+                        HeaderText="OS Finalizadas"/>
+
+                </Columns>
+
+            </asp:GridView>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="box">
+
+            <h2>
+                Últimos Serviços
+            </h2>
+
+            <asp:GridView
+                ID="gvServicos"
+                runat="server"
+                AutoGenerateColumns="False"
+                CssClass="tabela">
+
+                <Columns>
+
+                    <asp:BoundField
+                        DataField="id_servico"
+                        HeaderText="ID"/>
+
+                    <asp:BoundField
+                        DataField="nm_tipo_servico"
+                        HeaderText="Tipo"/>
+
+                    <asp:BoundField
+                        DataField="cliente"
+                        HeaderText="Cliente"/>
+
+                    <asp:BoundField
+                        DataField="mecanico"
+                        HeaderText="Mecânico"/>
+
+                    <asp:BoundField
+                        DataField="st_servico"
+                        HeaderText="Status"/>
+
+                    <asp:BoundField
+                        DataField="vl_servico"
+                        HeaderText="Valor"/>
+
+                </Columns>
+
+            </asp:GridView>
+
+        </div>
+
+    </main>
 
 </div>
 
 </form>
-    <!-- VLibras -->
-<div vw class="enabled">
-    <div vw-access-button class="active"></div>
 
-    <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-    </div>
-</div>
-
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-
-<script>
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-</script>
 </body>
 </html>
-

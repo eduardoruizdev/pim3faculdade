@@ -20,9 +20,24 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             if (!IsPostBack)
             {
-                CarregarClientes();
-                CarregarTiposServico();
-                CarregarMecanicos();
+                try
+                {
+                    Logger.Log(
+                        "ACESSO_CADASTRO_SERVICO",
+                        $"Usuário acessou a página de cadastro de serviço | Usuário: {Session["nome_usuario"]}"
+                    );
+
+                    CarregarClientes();
+                    CarregarTiposServico();
+                    CarregarMecanicos();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(
+                        "ERRO_CARREGAR_PAGINA_SERVICO",
+                        $"Erro ao carregar página de serviços | Erro: {ex.Message}"
+                    );
+                }
             }
         }
 
@@ -31,34 +46,42 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         /// </summary>
         private void CarregarClientes()
         {
-            ClienteController controller =
-                new ClienteController();
-
-            MySqlDataReader dados =
-                controller.ListarClientes();
-
-            ddlCliente.Items.Clear();
-
-            // Item padrão da lista
-            ddlCliente.Items.Add(
-                new System.Web.UI.WebControls.ListItem(
-                    "Selecione o cliente",
-                    "0"
-                )
-            );
-
-            // Adiciona os clientes encontrados
-            while (dados.Read())
+            try
             {
+                ClienteController controller =
+                    new ClienteController();
+
+                MySqlDataReader dados =
+                    controller.ListarClientes();
+
+                ddlCliente.Items.Clear();
+
                 ddlCliente.Items.Add(
                     new System.Web.UI.WebControls.ListItem(
-                        dados["nm_usuario"].ToString(),
-                        dados["id_cliente"].ToString()
+                        "Selecione o cliente",
+                        "0"
                     )
                 );
-            }
 
-            dados.Close();
+                while (dados.Read())
+                {
+                    ddlCliente.Items.Add(
+                        new System.Web.UI.WebControls.ListItem(
+                            dados["nm_usuario"].ToString(),
+                            dados["id_cliente"].ToString()
+                        )
+                    );
+                }
+
+                dados.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "ERRO_CARREGAR_CLIENTES",
+                    $"Erro ao carregar clientes | Erro: {ex.Message}"
+                );
+            }
         }
 
         /// <summary>
@@ -66,32 +89,42 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         /// </summary>
         private void CarregarMecanicos()
         {
-            ControllerServico controller =
-                new ControllerServico();
-
-            MySqlDataReader dados =
-                controller.ListarMecanicos();
-
-            ddlMecanico.Items.Clear();
-
-            ddlMecanico.Items.Add(
-                new System.Web.UI.WebControls.ListItem(
-                    "Selecione o mecânico",
-                    "0"
-                )
-            );
-
-            while (dados.Read())
+            try
             {
+                ControllerServico controller =
+                    new ControllerServico();
+
+                MySqlDataReader dados =
+                    controller.ListarMecanicos();
+
+                ddlMecanico.Items.Clear();
+
                 ddlMecanico.Items.Add(
                     new System.Web.UI.WebControls.ListItem(
-                        dados["nm_usuario"].ToString(),
-                        dados["id_mecanico"].ToString()
+                        "Selecione o mecânico",
+                        "0"
                     )
                 );
-            }
 
-            dados.Close();
+                while (dados.Read())
+                {
+                    ddlMecanico.Items.Add(
+                        new System.Web.UI.WebControls.ListItem(
+                            dados["nm_usuario"].ToString(),
+                            dados["id_mecanico"].ToString()
+                        )
+                    );
+                }
+
+                dados.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "ERRO_CARREGAR_MECANICOS",
+                    $"Erro ao carregar mecânicos | Erro: {ex.Message}"
+                );
+            }
         }
 
         /// <summary>
@@ -99,32 +132,42 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         /// </summary>
         private void CarregarTiposServico()
         {
-            ControllerServico controller =
-                new ControllerServico();
-
-            MySqlDataReader dados =
-                controller.ListarTiposServico();
-
-            ddlTipoServico.Items.Clear();
-
-            ddlTipoServico.Items.Add(
-                new System.Web.UI.WebControls.ListItem(
-                    "Selecione o tipo de serviço",
-                    "0"
-                )
-            );
-
-            while (dados.Read())
+            try
             {
+                ControllerServico controller =
+                    new ControllerServico();
+
+                MySqlDataReader dados =
+                    controller.ListarTiposServico();
+
+                ddlTipoServico.Items.Clear();
+
                 ddlTipoServico.Items.Add(
                     new System.Web.UI.WebControls.ListItem(
-                        dados["nm_tipo_servico"].ToString(),
-                        dados["id_tipo_servico"].ToString()
+                        "Selecione o tipo de serviço",
+                        "0"
                     )
                 );
-            }
 
-            dados.Close();
+                while (dados.Read())
+                {
+                    ddlTipoServico.Items.Add(
+                        new System.Web.UI.WebControls.ListItem(
+                            dados["nm_tipo_servico"].ToString(),
+                            dados["id_tipo_servico"].ToString()
+                        )
+                    );
+                }
+
+                dados.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "ERRO_CARREGAR_TIPOS_SERVICO",
+                    $"Erro ao carregar tipos de serviço | Erro: {ex.Message}"
+                );
+            }
         }
 
         /// <summary>
@@ -164,9 +207,19 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 }
 
                 dados.Close();
+
+                Logger.Log(
+                    "CLIENTE_SELECIONADO",
+                    $"Cliente selecionado no cadastro de serviço | ID Cliente: {ddlCliente.SelectedValue}"
+                );
             }
             catch (Exception ex)
             {
+                Logger.Log(
+                    "ERRO_SELECIONAR_CLIENTE",
+                    $"Erro ao selecionar cliente | Erro: {ex.Message}"
+                );
+
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "alert",
@@ -180,7 +233,6 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
         /// <summary>
         /// Calcula automaticamente o valor total do serviço.
-        /// Soma mão de obra e peças, subtraindo o desconto.
         /// </summary>
         protected void CalcularValorTotal(
             object sender,
@@ -218,19 +270,20 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             txtValorTotal.Text =
                 total.ToString("N2");
         }
-
-        /// <summary>
-        /// Evento executado ao clicar no botão Cadastrar.
-        /// Realiza validações e salva o serviço no banco.
-        /// </summary>
-        protected void btnCadastrar_Click(
-            object sender,
-            EventArgs e
-        )
+/// <summary>
+/// Evento executado ao clicar no botão Cadastrar.
+/// </summary>
+protected void btnCadastrar_Click(
+    object sender,
+    EventArgs e
+)
         {
             try
             {
-                // Validação do tipo de serviço
+                // =====================================
+                // VALIDAÇÕES
+                // =====================================
+
                 if (ddlTipoServico.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -238,7 +291,6 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
-                // Validação do cliente
                 if (ddlCliente.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -246,79 +298,6 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
-                // Criação do objeto serviço
-                ModelServico servico =
-                    new ModelServico();
-
-                // Preenchimento dos dados do serviço
-                servico.IdTipoServico =
-                    Convert.ToInt32(
-                        ddlTipoServico.SelectedValue
-                    );
-
-                servico.NmTituloServico =
-                    txtTitulo.Text;
-
-                servico.DsServicoResumido =
-                    txtDescricao.Text;
-
-                servico.DtCadastroServico =
-                    Convert.ToDateTime(
-                        txtDataEntrada.Text
-                    );
-
-                servico.DtPrevistaEntregaServico =
-                    Convert.ToDateTime(
-                        txtDataEntrega.Text
-                    );
-
-                servico.DsPrioridadeServico =
-                    ddlPrioridade.SelectedValue;
-
-                servico.CdPlacaVeiculoServico =
-                    txtPlaca.Text.ToUpper();
-
-                servico.NmModeloVeiculoServico =
-                    txtModelo.Text;
-
-                servico.CdAnoVeiculoServico =
-                    string.IsNullOrWhiteSpace(txtAno.Text)
-                    ? 0
-                    : Convert.ToInt32(txtAno.Text);
-
-                servico.NmCorVeiculoServico =
-                    ddlCor.SelectedValue;
-
-                servico.QtQuilometragemVeiculoServico =
-                    string.IsNullOrWhiteSpace(txtKm.Text)
-                    ? 0
-                    : Convert.ToDecimal(txtKm.Text);
-
-                servico.IdCliente =
-                    Convert.ToInt32(
-                        ddlCliente.SelectedValue
-                    );
-
-                servico.VlServico =
-                    string.IsNullOrWhiteSpace(
-                        txtValorTotal.Text
-                    )
-                    ? 0
-                    : decimal.Parse(
-                        txtValorTotal.Text,
-                        new System.Globalization.CultureInfo("pt-BR")
-                    );
-
-                servico.DsServico =
-                    txtObservacao.Text;
-
-                // Define o mecânico responsável
-                servico.IdMecanico =
-                    Convert.ToInt32(
-                        ddlMecanico.SelectedValue
-                    );
-
-                // Validação do mecânico
                 if (ddlMecanico.SelectedValue == "0")
                 {
                     throw new Exception(
@@ -326,7 +305,325 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     );
                 }
 
-                // Salva o serviço no banco de dados
+                // =====================================
+                // VALIDAÇÕES EXTRAS
+                // =====================================
+
+                // Título obrigatório
+                if (string.IsNullOrWhiteSpace(txtTitulo.Text))
+                {
+                    throw new Exception(
+                        "Informe o título do serviço."
+                    );
+                }
+
+                // Descrição obrigatória
+                if (string.IsNullOrWhiteSpace(txtDescricao.Text))
+                {
+                    throw new Exception(
+                        "Informe a descrição do serviço."
+                    );
+                }
+
+                // Data entrada obrigatória
+                if (string.IsNullOrWhiteSpace(txtDataEntrada.Text))
+                {
+                    throw new Exception(
+                        "Informe a data de entrada."
+                    );
+                }
+
+                // Data entrega obrigatória
+                if (string.IsNullOrWhiteSpace(txtDataEntrega.Text))
+                {
+                    throw new Exception(
+                        "Informe a data prevista de entrega."
+                    );
+                }
+
+                // Validar datas
+                DateTime dataEntrada;
+                DateTime dataEntrega;
+
+                if (!DateTime.TryParse(
+                    txtDataEntrada.Text,
+                    out dataEntrada
+                ))
+                {
+                    throw new Exception(
+                        "Data de entrada inválida."
+                    );
+                }
+
+                if (!DateTime.TryParse(
+                    txtDataEntrega.Text,
+                    out dataEntrega
+                ))
+                {
+                    throw new Exception(
+                        "Data de entrega inválida."
+                    );
+                }
+
+                // Data entrega menor
+                if (dataEntrega < dataEntrada)
+                {
+                    throw new Exception(
+                        "A data de entrega não pode ser menor que a data de entrada."
+                    );
+                }
+
+                // Placa obrigatória
+                if (string.IsNullOrWhiteSpace(txtPlaca.Text))
+                {
+                    throw new Exception(
+                        "Informe a placa do veículo."
+                    );
+                }
+
+                // Modelo obrigatório
+                if (string.IsNullOrWhiteSpace(txtModelo.Text))
+                {
+                    throw new Exception(
+                        "Informe o modelo do veículo."
+                    );
+                }
+
+                // Validar ano
+                int anoVeiculo = 0;
+
+                if (!string.IsNullOrWhiteSpace(txtAno.Text))
+                {
+                    if (!int.TryParse(
+                        txtAno.Text,
+                        out anoVeiculo
+                    ))
+                    {
+                        throw new Exception(
+                            "Ano do veículo inválido."
+                        );
+                    }
+
+                    if (
+                        anoVeiculo < 1950 ||
+                        anoVeiculo > DateTime.Now.Year + 1
+                    )
+                    {
+                        throw new Exception(
+                            "Informe um ano válido."
+                        );
+                    }
+                }
+
+                // Validar KM
+                decimal km = 0;
+
+                if (!string.IsNullOrWhiteSpace(txtKm.Text))
+                {
+                    if (
+                        !decimal.TryParse(
+                            txtKm.Text.Replace(",", "."),
+                            System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out km
+                        )
+                    )
+                    {
+                        throw new Exception(
+                            "Quilometragem inválida."
+                        );
+                    }
+
+                    if (km < 0)
+                    {
+                        throw new Exception(
+                            "A quilometragem não pode ser negativa."
+                        );
+                    }
+                }
+
+                // Validar mão de obra
+                decimal maoObra = 0;
+
+                if (!string.IsNullOrWhiteSpace(txtMaoObra.Text))
+                {
+                    if (
+                        !decimal.TryParse(
+                            txtMaoObra.Text.Replace(",", "."),
+                            System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out maoObra
+                        )
+                    )
+                    {
+                        throw new Exception(
+                            "Valor da mão de obra inválido."
+                        );
+                    }
+
+                    if (maoObra < 0)
+                    {
+                        throw new Exception(
+                            "O valor da mão de obra não pode ser negativo."
+                        );
+                    }
+                }
+
+                // Validar peças
+                decimal pecas = 0;
+
+                if (!string.IsNullOrWhiteSpace(txtPecas.Text))
+                {
+                    if (
+                        !decimal.TryParse(
+                            txtPecas.Text.Replace(",", "."),
+                            System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out pecas
+                        )
+                    )
+                    {
+                        throw new Exception(
+                            "Valor das peças inválido."
+                        );
+                    }
+
+                    if (pecas < 0)
+                    {
+                        throw new Exception(
+                            "O valor das peças não pode ser negativo."
+                        );
+                    }
+                }
+
+                // Validar desconto
+                decimal desconto = 0;
+
+                if (!string.IsNullOrWhiteSpace(txtDesconto.Text))
+                {
+                    if (
+                        !decimal.TryParse(
+                            txtDesconto.Text.Replace(",", "."),
+                            System.Globalization.NumberStyles.Any,
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            out desconto
+                        )
+                    )
+                    {
+                        throw new Exception(
+                            "Valor do desconto inválido."
+                        );
+                    }
+
+                    if (desconto < 0)
+                    {
+                        throw new Exception(
+                            "O desconto não pode ser negativo."
+                        );
+                    }
+
+                    if (desconto > (maoObra + pecas))
+                    {
+                        throw new Exception(
+                            "O desconto não pode ser maior que o valor total."
+                        );
+                    }
+                }
+
+                // =====================================
+                // CALCULAR TOTAL
+                // =====================================
+
+                decimal total =
+                    (maoObra + pecas) - desconto;
+
+                if (total <= 0)
+                {
+                    throw new Exception(
+                        "O valor do serviço deve ser maior que zero."
+                    );
+                }
+
+                // Não permitir valor absurdamente alto
+                if (total > 1000000)
+                {
+                    throw new Exception(
+                        "O valor do serviço está acima do limite permitido."
+                    );
+                }
+
+                // Garantir que o campo não fique vazio
+                if (string.IsNullOrWhiteSpace(txtValorTotal.Text))
+                {
+                    throw new Exception(
+                        "O valor total do serviço não pode ficar vazio."
+                    );
+                }
+
+                // =====================================
+                // OBJETO SERVIÇO
+                // =====================================
+
+                ModelServico servico =
+                    new ModelServico();
+
+                servico.IdTipoServico =
+                    Convert.ToInt32(
+                        ddlTipoServico.SelectedValue
+                    );
+
+                servico.NmTituloServico =
+                    txtTitulo.Text.Trim();
+
+                servico.DsServicoResumido =
+                    txtDescricao.Text.Trim();
+
+                servico.DtCadastroServico =
+                    dataEntrada;
+
+                servico.DtPrevistaEntregaServico =
+                    dataEntrega;
+
+                servico.DsPrioridadeServico =
+                    ddlPrioridade.SelectedValue;
+
+                servico.CdPlacaVeiculoServico =
+                    txtPlaca.Text
+                        .Trim()
+                        .ToUpper();
+
+                servico.NmModeloVeiculoServico =
+                    txtModelo.Text.Trim();
+
+                servico.CdAnoVeiculoServico =
+                    anoVeiculo;
+
+                servico.NmCorVeiculoServico =
+                    ddlCor.SelectedValue;
+
+                servico.QtQuilometragemVeiculoServico =
+                    km;
+
+                servico.IdCliente =
+                    Convert.ToInt32(
+                        ddlCliente.SelectedValue
+                    );
+
+                servico.VlServico =
+                    total;
+
+                servico.DsServico =
+                    txtObservacao.Text.Trim();
+
+                servico.IdMecanico =
+                    Convert.ToInt32(
+                        ddlMecanico.SelectedValue
+                    );
+
+                // =====================================
+                // SALVAR SERVIÇO
+                // =====================================
+
                 ControllerServico controller =
                     new ControllerServico();
 
@@ -334,7 +631,15 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     servico
                 );
 
-                // Exibe mensagem de sucesso
+                Logger.Log(
+                    "CADASTRO_SERVICO_OFICINA",
+                    $"Serviço cadastrado | Cliente: {ddlCliente.SelectedItem.Text} | Mecânico: {ddlMecanico.SelectedItem.Text} | Veículo: {txtModelo.Text} | Placa: {txtPlaca.Text} | Valor: R$ {total}"
+                );
+
+                // =====================================
+                // SUCESSO
+                // =====================================
+
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "alert",
@@ -346,7 +651,11 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
             }
             catch (Exception ex)
             {
-                // Exibe mensagem de erro
+                Logger.Log(
+                    "ERRO_CADASTRAR_SERVICO",
+                    $"Erro ao cadastrar serviço | Erro: {ex.Message}"
+                );
+
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "alert",

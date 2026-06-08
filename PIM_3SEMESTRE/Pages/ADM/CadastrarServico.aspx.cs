@@ -2,6 +2,7 @@
 using PIM_3SEMESTRE.Controllers;
 using PIM_3SEMESTRE.Models;
 using System;
+using System.Linq;
 
 namespace PIM_3SEMESTRE.Pages.ADM
 {
@@ -14,7 +15,7 @@ namespace PIM_3SEMESTRE.Pages.ADM
     {
         // Instância do controller responsável pelos tipos de serviço
         TipoServicoController controller =
-        new TipoServicoController();
+            new TipoServicoController();
 
         /// <summary>
         /// Evento executado ao carregar a página.
@@ -41,58 +42,171 @@ namespace PIM_3SEMESTRE.Pages.ADM
         {
             try
             {
-                // Verifica se o nome do serviço foi informado
+                // =========================
+                // VALIDAÇÃO
+                // =========================
+
                 if (string.IsNullOrWhiteSpace(
                     txtTipoServico.Text))
                 {
                     ExibirMensagem(
-                    "Digite o nome do serviço.");
+                        "Digite o nome do serviço."
+                    );
 
                     return;
                 }
 
-                // Verifica se o serviço já existe no banco
+                string nomeServico =
+                    txtTipoServico.Text.Trim();
+
+                // =========================
+                // TAMANHO MÍNIMO
+                // =========================
+
+                if (nomeServico.Length < 3)
+                {
+                    ExibirMensagem(
+                        "O nome do serviço deve possuir no mínimo 3 caracteres."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // TAMANHO MÁXIMO
+                // =========================
+
+                if (nomeServico.Length > 100)
+                {
+                    ExibirMensagem(
+                        "O nome do serviço é muito grande."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // NÃO PERMITIR APENAS NÚMEROS
+                // =========================
+
+                bool apenasNumeros =
+                    true;
+
+                foreach (char c in nomeServico)
+                {
+                    if (!char.IsDigit(c) &&
+                        c != ' ')
+                    {
+                        apenasNumeros = false;
+                        break;
+                    }
+                }
+
+                if (apenasNumeros)
+                {
+                    ExibirMensagem(
+                        "O nome do serviço não pode conter apenas números."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // NÃO PERMITIR CARACTERES ESTRANHOS
+                // =========================
+
+                string caracteresInvalidos =
+                    "@#$%¨&*+=[]{}<>|\\/";
+
+                foreach (char c in nomeServico)
+                {
+                    if (caracteresInvalidos.Contains(c))
+                    {
+                        ExibirMensagem(
+                            "O nome do serviço contém caracteres inválidos."
+                        );
+
+                        return;
+                    }
+                }
+
+                // =========================
+                // VERIFICA SE JÁ EXISTE
+                // =========================
+
                 bool existe =
-                controller.VerificarTipoServicoExiste(
-                    txtTipoServico.Text
-                );
+                    controller.VerificarTipoServicoExiste(
+                        nomeServico
+                    );
 
                 if (existe)
                 {
+                    Logger.Log(
+                        "SERVICO_DUPLICADO",
+                        $"Tentativa de cadastrar serviço já existente | Serviço: {nomeServico}"
+                    );
+
                     ExibirMensagem(
-                    "Esse tipo de serviço já existe.");
+                        "Esse tipo de serviço já existe."
+                    );
 
                     return;
                 }
 
-                // Cria o objeto do tipo de serviço
+                // =========================
+                // CRIA OBJETO
+                // =========================
+
                 TipoServicoModel servico =
-                new TipoServicoModel();
+                    new TipoServicoModel();
 
-                // Atribui o nome informado pelo usuário
                 servico.NomeTipoServico =
-                txtTipoServico.Text;
+                    nomeServico;
 
-                // Realiza o cadastro no banco de dados
+                // =========================
+                // CADASTRO
+                // =========================
+
                 controller.CadastrarTipoServico(
                     servico
                 );
 
-                // Limpa o campo após o cadastro
+                Logger.Log(
+                    "CADASTRO_SERVICO",
+                    $"Tipo de serviço cadastrado | Serviço: {nomeServico}"
+                );
+
+                // =========================
+                // LIMPA CAMPO
+                // =========================
+
                 txtTipoServico.Text = "";
 
-                // Atualiza a GridView
+                // =========================
+                // ATUALIZA GRID
+                // =========================
+
                 CarregarServicos();
 
-                // Exibe mensagem de sucesso
+                // =========================
+                // MENSAGEM SUCESSO
+                // =========================
+
                 ExibirMensagem(
-                "Tipo de serviço cadastrado com sucesso!");
+                    "Tipo de serviço cadastrado com sucesso!"
+                );
             }
             catch (Exception ex)
             {
-                // Exibe mensagem caso ocorra erro
+                Logger.Log(
+                    "ERRO_CADASTRO_SERVICO",
+                    $"Erro ao cadastrar tipo de serviço | Erro: {ex.Message}"
+                );
+
                 ExibirMensagem(
-                "Erro: " + ex.Message);
+                    "Erro: " +
+                    ex.Message.Replace("'", "")
+                );
             }
         }
 
@@ -102,15 +216,30 @@ namespace PIM_3SEMESTRE.Pages.ADM
         /// </summary>
         private void CarregarServicos()
         {
-            // Busca os registros no banco
-            MySqlDataReader dados =
-            controller.ListarTiposServico();
+            try
+            {
+                // Busca os registros no banco
+                MySqlDataReader dados =
+                    controller.ListarTiposServico();
 
-            // Define a fonte de dados da GridView
-            gvServicos.DataSource = dados;
+                // Define a fonte de dados da GridView
+                gvServicos.DataSource = dados;
 
-            // Atualiza a exibição dos dados
-            gvServicos.DataBind();
+                // Atualiza a exibição dos dados
+                gvServicos.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "ERRO_LISTAR_SERVICOS",
+                    $"Erro ao carregar serviços | Erro: {ex.Message}"
+                );
+
+                ExibirMensagem(
+                    "Erro ao carregar serviços: "
+                    + ex.Message
+                );
+            }
         }
 
         /// <summary>
@@ -123,27 +252,55 @@ namespace PIM_3SEMESTRE.Pages.ADM
         {
             try
             {
-                // Obtém o ID do serviço selecionado
+                // =========================
+                // OBTÉM ID
+                // =========================
+
                 int id =
-                Convert.ToInt32(
-                    gvServicos.DataKeys[e.RowIndex].Value
+                    Convert.ToInt32(
+                        gvServicos.DataKeys[e.RowIndex].Value
+                    );
+
+                Logger.Log(
+                    "EXCLUIR_SERVICO",
+                    $"Tentativa de exclusão de serviço | ID Serviço: {id}"
                 );
 
-                // Executa a exclusão
+                // =========================
+                // EXCLUI
+                // =========================
+
                 controller.ExcluirTipoServico(id);
 
-                // Atualiza a GridView
+                Logger.Log(
+                    "SERVICO_EXCLUIDO",
+                    $"Serviço excluído com sucesso | ID Serviço: {id}"
+                );
+
+                // =========================
+                // ATUALIZA GRID
+                // =========================
+
                 CarregarServicos();
 
-                // Exibe mensagem de sucesso
+                // =========================
+                // SUCESSO
+                // =========================
+
                 ExibirMensagem(
-                "Serviço excluído com sucesso!");
+                    "Serviço excluído com sucesso!"
+                );
             }
             catch (Exception ex)
             {
-                // Exibe mensagem caso ocorra erro
+                Logger.Log(
+                    "ERRO_EXCLUIR_SERVICO",
+                    $"Erro ao excluir serviço | Erro: {ex.Message}"
+                );
+
                 ExibirMensagem(
-                "Erro: " + ex.Message);
+                    "Erro: " + ex.Message
+                );
             }
         }
 

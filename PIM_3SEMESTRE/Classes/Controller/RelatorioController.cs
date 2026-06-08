@@ -200,5 +200,157 @@ namespace PIM_3SEMESTRE.Controllers
         }
 
         #endregion
+        #region RELATORIO PRODUTIVIDADE
+
+public MySqlDataReader RelatorioProdutividadeMensal()
+        {
+            string sql = @"
+
+    SELECT
+
+        DATE_FORMAT(
+            dt_cadastro_servico,
+            '%m/%Y'
+        ) AS mes,
+
+        COUNT(*) AS total_os,
+
+        CONCAT(
+            'R$ ',
+            FORMAT(
+                SUM(vl_servico),
+                2,
+                'pt_BR'
+            )
+        ) AS faturamento,
+
+        CONCAT(
+            AVG(
+                DATEDIFF(
+                    dt_prevista_entrega_servico,
+                    dt_cadastro_servico
+                )
+            ),
+            ' dias'
+        ) AS tempo_medio
+
+    FROM servico
+
+    WHERE st_servico = 'Concluído'
+
+    GROUP BY
+        DATE_FORMAT(
+            dt_cadastro_servico,
+            '%m/%Y'
+        )
+
+    ORDER BY
+        dt_cadastro_servico DESC";
+
+            return ConsultarSQL(sql);
+        }
+
+        #endregion
+
+        #region RANKING SERVICOS
+
+        public MySqlDataReader RankingServicos()
+        {
+            string sql = @"
+
+    SELECT
+
+        ts.nm_tipo_servico,
+
+        COUNT(*) AS quantidade
+
+    FROM servico s
+
+    INNER JOIN tipo_servico ts
+        ON s.id_tipo_servico =
+        ts.id_tipo_servico
+
+    GROUP BY ts.nm_tipo_servico
+
+    ORDER BY quantidade DESC";
+
+            return ConsultarSQL(sql);
+        }
+
+        #endregion
+
+        #region CLIENTES RECORRENTES
+
+        public MySqlDataReader ClientesRecorrentes()
+        {
+            string sql = @"
+
+    SELECT
+
+        u.nm_usuario AS cliente,
+
+        COUNT(*) AS quantidade,
+
+        CONCAT(
+            'R$ ',
+            FORMAT(
+                SUM(s.vl_servico),
+                2,
+                'pt_BR'
+            )
+        ) AS total_gasto
+
+    FROM servico s
+
+    INNER JOIN cliente c
+        ON s.id_cliente =
+        c.id_cliente
+
+    INNER JOIN usuario u
+        ON c.id_usuario =
+        u.id_usuario
+
+    GROUP BY u.nm_usuario
+
+    ORDER BY quantidade DESC";
+
+            return ConsultarSQL(sql);
+        }
+
+        #endregion
+
+        #region RANKING MECANICOS
+
+        public MySqlDataReader RankingMecanicos()
+        {
+            string sql = @"
+
+    SELECT
+
+        u.nm_usuario AS mecanico,
+
+        COUNT(*) AS quantidade
+
+    FROM servico s
+
+    INNER JOIN mecanico m
+        ON s.id_mecanico =
+        m.id_mecanico
+
+    INNER JOIN usuario u
+        ON m.id_usuario =
+        u.id_usuario
+
+    WHERE s.st_servico = 'Concluído'
+
+    GROUP BY u.nm_usuario
+
+    ORDER BY quantidade DESC";
+
+            return ConsultarSQL(sql);
+        }
+
+#endregion
+
     }
 }

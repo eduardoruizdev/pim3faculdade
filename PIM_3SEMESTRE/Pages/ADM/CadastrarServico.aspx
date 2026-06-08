@@ -51,12 +51,12 @@ Inherits="PIM_3SEMESTRE.Pages.ADM.CadastrarServico" %>
 
           <div class="menu">
 
-              <a href="cadastrarfuncionario.aspx" class="active">
+              <a href="cadastrarfuncionario.aspx" >
                   <i class="fa-solid fa-user-plus"></i>
                   Cadastrar Funcionário
               </a>
 
-              <a href="cadastrarServico.aspx">
+              <a href="cadastrarServico.aspx" class="active">
                   <i class="fa-solid fa-users"></i>
                   Cadastrar Tipo Serviço
               </a>
@@ -68,21 +68,26 @@ Inherits="PIM_3SEMESTRE.Pages.ADM.CadastrarServico" %>
 
           </div>
 
-          <div class="help-box">
+                  <div class="help-box">
 
-              <h3>Precisa de ajuda?</h3>
+            <h3>Precisa de ajuda?</h3>
 
-              <p>
-                  Nossa equipe está pronta
-                  para te atender.
-              </p>
+            <p>
+                Nossa equipe está pronta
+                para te atender.
+            </p>
 
-              <button type="button" class="help-btn">
-                  <i class="fa-solid fa-headset"></i>
-                  Falar com a oficina
-              </button>
+          
+<a href="mailto:autotechoficina@gmail.com"
+   class="help-btn">
 
-          </div>
+    <i class="fa-solid fa-headset"></i>
+    Falar com a oficina
+
+</a>
+
+
+        </div>
 
           <a href="../Login/login.aspx" class="logout">
               <i class="fa-solid fa-arrow-right-from-bracket"></i>

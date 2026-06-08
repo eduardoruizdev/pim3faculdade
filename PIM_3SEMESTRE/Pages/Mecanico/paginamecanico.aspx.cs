@@ -44,6 +44,11 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
         {
             if (Session["id_usuario"] == null)
             {
+                Logger.Log(
+                    "ACESSO_NEGADO_MECANICO",
+                    "Tentativa de acesso sem login na página do mecânico."
+                );
+
                 Response.Redirect(
                     "~/Pages/Login/login.aspx"
                 );
@@ -61,6 +66,11 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
                     Convert.ToInt32(
                         Session["id_usuario"]
                     );
+
+                Logger.Log(
+                    "ACESSO_PAGINA_MECANICO",
+                    $"Página do mecânico carregada | ID Usuário: {idUsuario}"
+                );
 
                 StringBuilder html =
                     new StringBuilder();
@@ -177,58 +187,58 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
                     html.Append($@"
 
-<a href='paginamecanico.aspx?id={idServico}'
-   class='order-card {(ativo ? "active-card" : "")}'>
+<a href='paginamecanico.aspx?id={idServico}' 
+class='card-service {(ativo ? "ativo" : "")}'>
 
-    <div class='top-order'>
+<div class='top-order'>
 
-        <div class='order-number'>
-            OS #{dados["id_servico"]}
-        </div>
-
-        <span class='status {classeStatus}'>
-            {status}
-        </span>
-
+    <div class='order-number'>
+        OS #{dados["id_servico"]}
     </div>
 
-    <h3>
-        {dados["nm_titulo_servico"]}
-    </h3>
+    <span class='status {classeStatus}'>
+        {status}
+    </span>
 
-    <div class='info-line'>
+</div>
 
-        <span>
-            <i class='fa-solid fa-car'></i>
-            {dados["nm_modelo_veiculo_servico"]}
-        </span>
+<h3>
+    {dados["nm_titulo_servico"]}
+</h3>
 
-        <span>
-            Placa:
-            {dados["cd_placa_veiculo_servico"]}
-        </span>
+<div class='info-line'>
 
-    </div>
+    <span>
+        <i class='fa-solid fa-car'></i>
+        {dados["nm_modelo_veiculo_servico"]}
+    </span>
 
-    <div class='info-line'>
+    <span>
+        Placa:
+        {dados["cd_placa_veiculo_servico"]}
+    </span>
 
-        <span>
-            <i class='fa-regular fa-calendar'></i>
-            Entrada:
-            {dataEntrada}
-        </span>
+</div>
 
-        <span>
-            <i class='fa-regular fa-clock'></i>
-            Previsão:
-            {dataPrevisao}
-        </span>
+<div class='info-line'>
 
-    </div>
+    <span>
+        <i class='fa-regular fa-calendar'></i>
+        Entrada:
+        {dataEntrada}
+    </span>
 
-    <div class='arrow'>
-        <i class='fa-solid fa-chevron-right'></i>
-    </div>
+    <span>
+        <i class='fa-regular fa-clock'></i>
+        Previsão:
+        {dataPrevisao}
+    </span>
+
+</div>
+
+<div class='arrow'>
+    <i class='fa-solid fa-chevron-right'></i>
+</div>
 
 </a>
 
@@ -240,141 +250,123 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
 
                     if (idSelecionado == idServico)
                     {
+                        Logger.Log(
+                            "VISUALIZAR_OS_MECANICO",
+                            $"Mecânico visualizou OS | ID Serviço: {idServico} | Status: {status}"
+                        );
+
                         detalhesServico = $@"
 
-<div class='details-top'>
+<h2>
+    OS #{dados["id_servico"]}
+</h2>
 
-    <h2>
-        OS #{dados["id_servico"]}
-    </h2>
+<span class='status {classeStatus}'>
+    {status}
+</span>
 
-    <span class='status {classeStatus}'>
-        {status}
+<h3>
+    <i class='fa-solid fa-screwdriver-wrench'></i>
+    Informações do veículo
+</h3>
+
+<div class='vehicle-box'>
+
+    <img src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop' />
+
+    <div>
+
+        <h4>
+            {dados["nm_modelo_veiculo_servico"]}
+        </h4>
+
+        <p>
+            Placa:
+            {dados["cd_placa_veiculo_servico"]}
+        </p>
+
+        <p>
+            Cor:
+            {dados["nm_cor_veiculo_servico"]}
+        </p>
+
+    </div>
+
+</div>
+
+<h3>
+    Informações do serviço
+</h3>
+
+<div class='service-info'>
+
+    <p>
+        <strong>
+            Serviço solicitado
+        </strong>
+    </p>
+
+    <span>
+        {dados["nm_titulo_servico"]}
+    </span>
+
+    <p>
+        <strong>
+            Descrição
+        </strong>
+    </p>
+
+    <span>
+        {dados["ds_servico"]}
     </span>
 
 </div>
 
-<div class='section'>
+<div class='dates'>
 
-    <h3>
-        <i class='fa-solid fa-screwdriver-wrench'></i>
-        Informações do veículo
-    </h3>
-
-    <div class='vehicle-box'>
-
-        <img src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop' />
-
-        <div>
-
-            <h4>
-                {dados["nm_modelo_veiculo_servico"]}
-            </h4>
-
-            <p>
-                Placa:
-                {dados["cd_placa_veiculo_servico"]}
-            </p>
-
-            <p>
-                Cor:
-                {dados["nm_cor_veiculo_servico"]}
-            </p>
-
-        </div>
-
+    <div>
+        <i class='fa-regular fa-calendar'></i>
+        Entrada
     </div>
+
+    <span>
+        {dataEntrada}
+    </span>
 
 </div>
 
-<div class='section'>
+<div class='dates'>
 
-    <h3>
-        Informações do serviço
-    </h3>
-
-    <div class='service-info'>
-
-        <p>
-            <strong>
-                Serviço solicitado
-            </strong>
-        </p>
-
-        <span>
-            {dados["nm_titulo_servico"]}
-        </span>
-
-        <p>
-            <strong>
-                Descrição
-            </strong>
-        </p>
-
-        <span>
-            {dados["ds_servico"]}
-        </span>
-
+    <div>
+        <i class='fa-regular fa-clock'></i>
+        Previsão
     </div>
 
-    <div class='dates'>
-
-        <div>
-            <i class='fa-regular fa-calendar'></i>
-            Entrada
-        </div>
-
-        <span>
-            {dataEntrada}
-        </span>
-
-    </div>
-
-    <div class='dates'>
-
-        <div>
-            <i class='fa-regular fa-clock'></i>
-            Previsão
-        </div>
-
-        <span>
-            {dataPrevisao}
-        </span>
-
-    </div>
+    <span>
+        {dataPrevisao}
+    </span>
 
 </div>
 
-<div class='section'>
+<h3>
+    Cliente
+</h3>
 
-    <h3>
-        Cliente
-    </h3>
+<p class='obs'>
+    {dados["nm_cliente"]}
+</p>
 
-    <p class='obs'>
-        {dados["nm_cliente"]}
-    </p>
+<h3>
+    Valor do Serviço
+</h3>
 
-</div>
+<p class='obs'>
+    R$ {valorServico}
+</p>
 
-<div class='section'>
-
-    <h3>
-        Valor do Serviço
-    </h3>
-
-    <p class='obs'>
-        R$ {valorServico}
-    </p>
-
-</div>
-
-<button class='details-btn'
-        type='button'>
-
+<a href='detalheservico.aspx?id={idServico}' class='btn-details'>
     Ver detalhes completos
-
-</button>
+</a>
 
 ";
                     }
@@ -384,9 +376,19 @@ namespace PIM_3SEMESTRE.Pages.Mecanico
                     html.ToString();
 
                 dados.Close();
+
+                Logger.Log(
+                    "SERVICOS_MECANICO_CARREGADOS",
+                    $"Serviços do mecânico carregados com sucesso | Mecânico: {nomeMecanico}"
+                );
             }
             catch (Exception ex)
             {
+                Logger.Log(
+                    "ERRO_PAGINA_MECANICO",
+                    $"Erro na página do mecânico | Erro: {ex.Message}"
+                );
+
                 Response.Write(
                     "<script>alert('Erro: " +
                     ex.Message

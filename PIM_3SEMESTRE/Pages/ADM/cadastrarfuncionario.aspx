@@ -58,22 +58,26 @@
                     </a>
 
                 </div>
+        <div class="help-box">
 
-                <div class="help-box">
+            <h3>Precisa de ajuda?</h3>
 
-                    <h3>Precisa de ajuda?</h3>
+            <p>
+                Nossa equipe está pronta
+                para te atender.
+            </p>
 
-                    <p>
-                        Nossa equipe está pronta
-                        para te atender.
-                    </p>
+          
+<a href="mailto:autotechoficina@gmail.com"
+   class="help-btn">
 
-                    <button type="button" class="help-btn">
-                        <i class="fa-solid fa-headset"></i>
-                        Falar com a oficina
-                    </button>
+    <i class="fa-solid fa-headset"></i>
+    Falar com a oficina
 
-                </div>
+</a>
+
+
+        </div>
 
                 <a href="../Login/login.aspx" class="logout">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>

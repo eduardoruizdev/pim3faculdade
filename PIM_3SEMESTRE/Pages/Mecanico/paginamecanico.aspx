@@ -225,6 +225,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 </div>
 
 </form>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 
+<script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
 </body>
 </html>

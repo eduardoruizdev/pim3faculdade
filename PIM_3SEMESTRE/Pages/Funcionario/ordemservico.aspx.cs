@@ -23,8 +23,23 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             if (!IsPostBack)
             {
-                // Carrega todas as ordens de serviço na GridView
-                CarregarServicos();
+                try
+                {
+                    Logger.Log(
+                        "ACESSO_ORDEM_SERVICO",
+                        $"Usuário acessou a página de ordens de serviço | Usuário: {Session["nome_usuario"]}"
+                    );
+
+                    // Carrega todas as ordens de serviço
+                    CarregarServicos();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(
+                        "ERRO_CARREGAR_ORDEM_SERVICO",
+                        $"Erro ao carregar página de ordens de serviço | Erro: {ex.Message}"
+                    );
+                }
             }
         }
 
@@ -37,10 +52,25 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         /// </summary>
         private void CarregarServicos()
         {
-            gvServicos.DataSource =
-                controller.ListarServicos();
+            try
+            {
+                gvServicos.DataSource =
+                    controller.ListarServicos();
 
-            gvServicos.DataBind();
+                gvServicos.DataBind();
+
+                Logger.Log(
+                    "LISTAGEM_SERVICOS",
+                    "Lista de ordens de serviço carregada com sucesso."
+                );
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(
+                    "ERRO_LISTAGEM_SERVICOS",
+                    $"Erro ao carregar ordens de serviço | Erro: {ex.Message}"
+                );
+            }
         }
 
         // =========================================
@@ -56,7 +86,6 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             try
             {
-                // Captura e normaliza o CPF informado
                 string cpf =
                     txtBuscar.Text.Trim();
 
@@ -64,22 +93,35 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                          .Replace("-", "")
                          .Replace("/", "");
 
-                // Se não houver CPF, recarrega todos os registros
+                // Se vazio, recarrega tudo
                 if (string.IsNullOrEmpty(cpf))
                 {
+                    Logger.Log(
+                        "BUSCA_SERVICO_VAZIA",
+                        "Busca vazia realizada. Lista completa carregada."
+                    );
+
                     CarregarServicos();
                     return;
                 }
 
-                // Atualiza GridView com o resultado da busca
                 gvServicos.DataSource =
                     controller.BuscarServicoPorCpf(cpf);
 
                 gvServicos.DataBind();
+
+                Logger.Log(
+                    "BUSCA_SERVICO_CPF",
+                    $"Busca de serviço realizada | CPF: {cpf}"
+                );
             }
             catch (Exception ex)
             {
-                // Exibe erro caso ocorra falha na busca
+                Logger.Log(
+                    "ERRO_BUSCAR_SERVICO",
+                    $"Erro ao buscar serviço por CPF | Erro: {ex.Message}"
+                );
+
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -93,8 +135,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         // =========================================
 
         /// <summary>
-        /// Evento executado ao selecionar uma ordem de serviço na GridView.
-        /// Carrega os detalhes completos do serviço.
+        /// Evento executado ao selecionar uma ordem de serviço.
         /// </summary>
         protected void gvServicos_SelectedIndexChanged(
             object sender,
@@ -102,19 +143,16 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             try
             {
-                // Obtém o ID do serviço selecionado
                 int idServico =
                     Convert.ToInt32(
                         gvServicos.SelectedDataKey.Value
                     );
 
-                // Busca detalhes completos do serviço
                 MySqlDataReader dados =
                     controller.BuscarServico(idServico);
 
                 if (dados.Read())
                 {
-                    // Armazena o ID em campo oculto
                     hfIdServico.Value =
                         dados["id_servico"].ToString();
 
@@ -186,16 +224,24 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                             dados["vl_servico"]
                         ).ToString("C");
 
-                    // Atualiza dropdown de status
                     ddlStatus.SelectedValue =
                         dados["st_servico"].ToString();
+
+                    Logger.Log(
+                        "VISUALIZAR_ORDEM_SERVICO",
+                        $"Ordem de serviço visualizada | OS: {idServico} | Cliente: {lblCliente.Text}"
+                    );
                 }
 
                 dados.Close();
             }
             catch (Exception ex)
             {
-                // Exibe erro caso ocorra falha na seleção
+                Logger.Log(
+                    "ERRO_VISUALIZAR_SERVICO",
+                    $"Erro ao visualizar ordem de serviço | Erro: {ex.Message}"
+                );
+
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -217,16 +263,18 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             try
             {
-                // Obtém o ID do serviço selecionado
                 int idServico =
                     Convert.ToInt32(
                         gvServicos.DataKeys[e.RowIndex].Value
                     );
 
-                // Executa exclusão
                 controller.ExcluirServico(idServico);
 
-                // Mensagem de sucesso
+                Logger.Log(
+                    "EXCLUIR_ORDEM_SERVICO",
+                    $"Serviço excluído | ID Serviço: {idServico}"
+                );
+
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "msg",
@@ -234,12 +282,15 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     true
                 );
 
-                // Recarrega a grid
                 CarregarServicos();
             }
             catch (Exception ex)
             {
-                // Exibe erro caso falha na exclusão
+                Logger.Log(
+                    "ERRO_EXCLUIR_SERVICO",
+                    $"Erro ao excluir serviço | Erro: {ex.Message}"
+                );
+
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +
@@ -261,7 +312,6 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         {
             try
             {
-                // Verifica se um serviço foi selecionado
                 if (string.IsNullOrEmpty(hfIdServico.Value))
                 {
                     ClientScript.RegisterStartupScript(
@@ -274,13 +324,16 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     return;
                 }
 
-                // Atualiza status no banco de dados
                 controller.AtualizarStatus(
                     Convert.ToInt32(hfIdServico.Value),
                     ddlStatus.SelectedValue
                 );
 
-                // Mensagem de sucesso
+                Logger.Log(
+                    "ATUALIZAR_STATUS_SERVICO",
+                    $"Status atualizado | OS: {hfIdServico.Value} | Novo Status: {ddlStatus.SelectedValue}"
+                );
+
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "msg",
@@ -288,12 +341,15 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     true
                 );
 
-                // Atualiza grid
                 CarregarServicos();
             }
             catch (Exception ex)
             {
-                // Exibe erro caso falha na atualização
+                Logger.Log(
+                    "ERRO_ATUALIZAR_STATUS",
+                    $"Erro ao atualizar status do serviço | Erro: {ex.Message}"
+                );
+
                 Response.Write(
                     "<script>alert('" +
                     ex.Message.Replace("'", "") +

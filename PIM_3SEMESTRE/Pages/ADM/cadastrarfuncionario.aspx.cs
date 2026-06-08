@@ -1,6 +1,7 @@
 ﻿using PIM_3SEMESTRE.Controllers;
 using PIM_3SEMESTRE.Models;
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -22,14 +23,15 @@ namespace PIM_3SEMESTRE.Pages.ADM
         // =====================================
         // CADASTRAR
         // =====================================
-
-        protected void btnCadastrar_Click(
-            object sender,
-            EventArgs e)
+protected void btnCadastrar_Click(
+    object sender,
+    EventArgs e)
         {
             try
             {
+                // =========================
                 // VALIDAÇÕES
+                // =========================
 
                 if (string.IsNullOrWhiteSpace(
                     txtNome.Text))
@@ -41,6 +43,33 @@ namespace PIM_3SEMESTRE.Pages.ADM
                     return;
                 }
 
+                string nome =
+                    txtNome.Text.Trim();
+
+                // Nome mínimo
+                if (nome.Length < 3)
+                {
+                    ExibirMensagem(
+                        "O nome deve possuir no mínimo 3 caracteres."
+                    );
+
+                    return;
+                }
+
+                // Nome com número
+                if (nome.Any(char.IsDigit))
+                {
+                    ExibirMensagem(
+                        "O nome não pode conter números."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // EMAIL
+                // =========================
+
                 if (string.IsNullOrWhiteSpace(
                     txtEmail.Text))
                 {
@@ -50,6 +79,25 @@ namespace PIM_3SEMESTRE.Pages.ADM
 
                     return;
                 }
+
+                string email =
+                    txtEmail.Text.Trim();
+
+                if (
+                    !email.Contains("@") ||
+                    !email.Contains(".")
+                )
+                {
+                    ExibirMensagem(
+                        "Digite um email válido."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // SENHA
+                // =========================
 
                 if (string.IsNullOrWhiteSpace(
                     txtSenha.Text))
@@ -61,8 +109,26 @@ namespace PIM_3SEMESTRE.Pages.ADM
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(
-                    ddlTipoUsuario.SelectedValue))
+                string senha =
+                    txtSenha.Text.Trim();
+
+                // Senha mínima
+                if (senha.Length < 6)
+                {
+                    ExibirMensagem(
+                        "A senha deve ter no mínimo 6 caracteres."
+                    );
+
+                    return;
+                }
+
+                // =========================
+                // TIPO USUÁRIO
+                // =========================
+
+                if (
+                    ddlTipoUsuario.SelectedIndex == 0
+                )
                 {
                     ExibirMensagem(
                         "Selecione o tipo de usuário."
@@ -71,18 +137,59 @@ namespace PIM_3SEMESTRE.Pages.ADM
                     return;
                 }
 
+                // =========================
+                // MECÂNICO
+                // =========================
+
+                // Tipo 3 = Mecânico
+                if (ddlTipoUsuario.SelectedValue == "3")
+                {
+                    if (
+                        string.IsNullOrWhiteSpace(
+                            txtEspecialidade.Text
+                        )
+                    )
+                    {
+                        ExibirMensagem(
+                            "Digite a especialidade do mecânico."
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        txtEspecialidade.Text
+                            .Trim()
+                            .Length < 3
+                    )
+                    {
+                        ExibirMensagem(
+                            "A especialidade deve possuir no mínimo 3 caracteres."
+                        );
+
+                        return;
+                    }
+                }
+
                 UsuarioController usuarioController =
                     new UsuarioController();
 
+                // =========================
                 // VERIFICA EMAIL
+                // =========================
 
                 bool emailExiste =
                     usuarioController.VerificarEmailExiste(
-                        txtEmail.Text
+                        email
                     );
 
                 if (emailExiste)
                 {
+                    Logger.Log(
+                        "EMAIL_DUPLICADO",
+                        $"Tentativa de cadastro com email já existente | Email: {email}"
+                    );
+
                     ExibirMensagem(
                         "Este email já está cadastrado."
                     );
@@ -90,19 +197,21 @@ namespace PIM_3SEMESTRE.Pages.ADM
                     return;
                 }
 
+                // =========================
                 // CRIA USUÁRIO
+                // =========================
 
                 UsuarioModel usuario =
                     new UsuarioModel();
 
                 usuario.NomeUsuario =
-                    txtNome.Text;
+                    nome;
 
                 usuario.EmailUsuario =
-                    txtEmail.Text;
+                    email;
 
                 usuario.SenhaUsuario =
-                    txtSenha.Text;
+                    senha;
 
                 usuario.IdTipoUsuario =
                     Convert.ToInt32(
@@ -114,7 +223,14 @@ namespace PIM_3SEMESTRE.Pages.ADM
                         usuario
                     );
 
+                Logger.Log(
+                    "CADASTRO_USUARIO",
+                    $"Usuário cadastrado | ID: {idUsuario} | Nome: {nome} | Email: {email} | Tipo: {ddlTipoUsuario.SelectedItem.Text}"
+                );
+
+                // =========================
                 // CADASTRO MECÂNICO
+                // =========================
 
                 if (ddlTipoUsuario.SelectedValue == "3")
                 {
@@ -125,10 +241,10 @@ namespace PIM_3SEMESTRE.Pages.ADM
                         idUsuario;
 
                     mecanico.EspecialidadeMecanico =
-                        txtEspecialidade.Text;
+                        txtEspecialidade.Text.Trim();
 
                     mecanico.ObservacaoMecanico =
-                        txtObservacao.Text;
+                        txtObservacao.Text.Trim();
 
                     MecanicoController mecanicoController =
                         new MecanicoController();
@@ -136,19 +252,32 @@ namespace PIM_3SEMESTRE.Pages.ADM
                     mecanicoController.CadastrarMecanico(
                         mecanico
                     );
+
+                    Logger.Log(
+                        "CADASTRO_MECANICO",
+                        $"Mecânico cadastrado | ID Usuário: {idUsuario} | Especialidade: {txtEspecialidade.Text}"
+                    );
                 }
 
+                // =========================
                 // LIMPAR CAMPOS
+                // =========================
 
                 txtNome.Text = "";
+
                 txtEmail.Text = "";
+
                 txtSenha.Text = "";
+
                 txtEspecialidade.Text = "";
+
                 txtObservacao.Text = "";
 
                 ddlTipoUsuario.SelectedIndex = 0;
 
+                // =========================
                 // RECARREGA GRID
+                // =========================
 
                 CarregarFuncionarios();
 
@@ -158,11 +287,18 @@ namespace PIM_3SEMESTRE.Pages.ADM
             }
             catch (Exception ex)
             {
+                Logger.Log(
+                    "ERRO_CADASTRO_USUARIO",
+                    $"Erro ao cadastrar usuário | Erro: {ex.Message}"
+                );
+
                 ExibirMensagem(
-                    "Erro: " + ex.Message
+                    "Erro: " +
+                    ex.Message.Replace("'", "")
                 );
             }
         }
+
 
         // =====================================
         // LISTAR FUNCIONÁRIOS
@@ -182,6 +318,11 @@ namespace PIM_3SEMESTRE.Pages.ADM
             }
             catch (Exception ex)
             {
+                Logger.Log(
+                    "ERRO_LISTAR_FUNCIONARIOS",
+                    $"Erro ao carregar funcionários | Erro: {ex.Message}"
+                );
+
                 ExibirMensagem(
                     "Erro ao carregar funcionários: "
                     + ex.Message
@@ -206,11 +347,21 @@ namespace PIM_3SEMESTRE.Pages.ADM
                         ].Value
                     );
 
+                Logger.Log(
+                    "EXCLUIR_USUARIO",
+                    $"Tentativa de exclusão | ID Usuário: {idUsuario}"
+                );
+
                 UsuarioController controller =
                     new UsuarioController();
 
                 controller.ExcluirUsuario(
                     idUsuario
+                );
+
+                Logger.Log(
+                    "USUARIO_EXCLUIDO",
+                    $"Usuário excluído com sucesso | ID Usuário: {idUsuario}"
                 );
 
                 ExibirMensagem(
@@ -221,6 +372,11 @@ namespace PIM_3SEMESTRE.Pages.ADM
             }
             catch (Exception ex)
             {
+                Logger.Log(
+                    "ERRO_EXCLUIR_USUARIO",
+                    $"Erro ao excluir usuário | Erro: {ex.Message}"
+                );
+
                 ExibirMensagem(
                     "Erro ao excluir usuário: "
                     + ex.Message

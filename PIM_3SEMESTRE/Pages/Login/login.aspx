@@ -98,8 +98,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
                             TextMode="Password"
                             placeholder="Digite sua senha">
                         </asp:TextBox>
-
-                        <i class="fa-regular fa-eye eye"></i>
+                        <i class="fa-regular fa-eye eye" id="toggleSenha"></i>
                     </div>
                 </div>
              <div class="captcha-box">
@@ -152,6 +151,34 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
+
+    <script>
+        const toggleSenha =
+            document.getElementById("toggleSenha");
+
+        const txtSenha =
+            document.getElementById("<%= txtSenha.ClientID %>");
+
+        toggleSenha.addEventListener("click", function () {
+
+            if (txtSenha.type === "password") {
+
+                txtSenha.type = "text";
+
+                toggleSenha.classList.remove("fa-eye");
+
+                toggleSenha.classList.add("fa-eye-slash");
+
+            } else {
+
+                txtSenha.type = "password";
+
+                toggleSenha.classList.remove("fa-eye-slash");
+
+                toggleSenha.classList.add("fa-eye");
+            }
+        });
+    </script>
 </body>
 </html>
 </html>

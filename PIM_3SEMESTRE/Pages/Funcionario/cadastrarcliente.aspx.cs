@@ -1,6 +1,7 @@
 ﻿using PIM_3SEMESTRE.Controllers;
 using PIM_3SEMESTRE.Models;
 using System;
+using System.Linq;
 
 namespace PIM_3SEMESTRE.Pages.Funcionario
 {
@@ -12,8 +13,8 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
         }
 
         protected void btnCadastrar_Click(
-            object sender,
-            EventArgs e)
+     object sender,
+     EventArgs e)
         {
             try
             {
@@ -27,10 +28,23 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     return;
                 }
 
-                if (txtNome.Text.Trim().Length < 3)
+                string nome =
+                    txtNome.Text.Trim();
+
+                if (nome.Length < 3)
                 {
                     Alerta(
                         "O nome deve ter no mínimo 3 caracteres."
+                    );
+
+                    return;
+                }
+
+                // Não permitir números no nome
+                if (nome.Any(char.IsDigit))
+                {
+                    Alerta(
+                        "O nome não pode conter números."
                     );
 
                     return;
@@ -49,10 +63,15 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 string email =
                     txtEmail.Text.Trim();
 
-                if (!email.Contains("@") ||
-                    !email.Contains("."))
+                if (
+                    !email.Contains("@") ||
+                    !email.Contains(".")
+                )
                 {
-                    Alerta("Digite um e-mail válido.");
+                    Alerta(
+                        "Digite um e-mail válido."
+                    );
+
                     return;
                 }
 
@@ -87,6 +106,24 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     return;
                 }
 
+                // CPF repetido
+                if (
+                    cpf == "00000000000" ||
+                    cpf == "11111111111" ||
+                    cpf == "22222222222" ||
+                    cpf == "33333333333" ||
+                    cpf == "44444444444" ||
+                    cpf == "55555555555" ||
+                    cpf == "66666666666" ||
+                    cpf == "77777777777" ||
+                    cpf == "88888888888" ||
+                    cpf == "99999999999"
+                )
+                {
+                    Alerta("CPF inválido.");
+                    return;
+                }
+
                 // =========================================
                 // NASCIMENTO
                 // =========================================
@@ -102,12 +139,25 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
                 DateTime nascimento;
 
-                if (!DateTime.TryParse(
-                    txtNascimento.Text,
-                    out nascimento))
+                if (
+                    !DateTime.TryParse(
+                        txtNascimento.Text,
+                        out nascimento
+                    )
+                )
                 {
                     Alerta(
                         "Data de nascimento inválida."
+                    );
+
+                    return;
+                }
+
+                // Data futura
+                if (nascimento > DateTime.Now)
+                {
+                    Alerta(
+                        "A data de nascimento não pode ser futura."
                     );
 
                     return;
@@ -117,8 +167,10 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     DateTime.Now.Year -
                     nascimento.Year;
 
-                if (nascimento >
-                    DateTime.Now.AddYears(-idade))
+                if (
+                    nascimento >
+                    DateTime.Now.AddYears(-idade)
+                )
                 {
                     idade--;
                 }
@@ -149,9 +201,21 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                                     .Replace(" ", "")
                                     .Trim();
 
-                if (telefone.Length < 10)
+                if (
+                    telefone.Length < 10 ||
+                    telefone.Length > 11
+                )
                 {
                     Alerta("Telefone inválido.");
+                    return;
+                }
+
+                if (!long.TryParse(telefone, out _))
+                {
+                    Alerta(
+                        "O telefone deve conter apenas números."
+                    );
+
                     return;
                 }
 
@@ -209,12 +273,25 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
                 int numero;
 
-                if (!int.TryParse(
-                    txtNumero.Text,
-                    out numero))
+                if (
+                    !int.TryParse(
+                        txtNumero.Text,
+                        out numero
+                    )
+                )
                 {
                     Alerta(
                         "Número da residência inválido."
+                    );
+
+                    return;
+                }
+
+                // Número negativo
+                if (numero <= 0)
+                {
+                    Alerta(
+                        "O número da residência deve ser maior que zero."
                     );
 
                     return;
@@ -258,7 +335,7 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                     new ClienteModel();
 
                 cliente.NomeUsuario =
-                    txtNome.Text.Trim();
+                    nome;
 
                 cliente.EmailUsuario =
                     email;
@@ -308,6 +385,11 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
 
                 controller.CadastrarCliente(cliente);
 
+                Logger.Log(
+                    "CADASTRO_CLIENTE",
+                    $"Cliente cadastrado | Nome: {txtNome.Text} | CPF: {cpf} | Cidade: {txtCidade.Text}"
+                );
+
                 Alerta(
                     "Cliente cadastrado com sucesso!"
                 );
@@ -323,9 +405,16 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 // EMAIL DUPLICADO
                 // =====================================
 
-                if (erro.Contains("email") ||
-                    erro.Contains("nm_email_usuario"))
+                if (
+                    erro.Contains("email") ||
+                    erro.Contains("nm_email_usuario")
+                )
                 {
+                    Logger.Log(
+                        "EMAIL_CLIENTE_DUPLICADO",
+                        $"Tentativa de cadastro com email já existente | Email: {txtEmail.Text}"
+                    );
+
                     Alerta(
                         "Este e-mail já está cadastrado."
                     );
@@ -337,9 +426,16 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 // CPF DUPLICADO
                 // =====================================
 
-                if (erro.Contains("cpf") ||
-                    erro.Contains("cd_cpf_cliente"))
+                if (
+                    erro.Contains("cpf") ||
+                    erro.Contains("cd_cpf_cliente")
+                )
                 {
+                    Logger.Log(
+                        "CPF_CLIENTE_DUPLICADO",
+                        $"Tentativa de cadastro com CPF já existente | CPF: {txtCpf.Text}"
+                    );
+
                     Alerta(
                         "Este CPF já está cadastrado."
                     );
@@ -351,13 +447,17 @@ namespace PIM_3SEMESTRE.Pages.Funcionario
                 // ERRO PADRÃO
                 // =====================================
 
+                Logger.Log(
+                    "ERRO_CADASTRO_CLIENTE",
+                    $"Erro ao cadastrar cliente | Erro: {ex.Message}"
+                );
+
                 Alerta(
                     "Erro: " +
                     ex.Message.Replace("'", "")
                 );
             }
         }
-
         // =========================================
         // LIMPAR CAMPOS
         // =========================================

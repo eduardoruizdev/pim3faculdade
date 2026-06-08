@@ -12,21 +12,25 @@ namespace PIM_3SEMESTRE.Pages.Login
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void btnEntrar_Click(object sender, EventArgs e)
         {
             try
             {
+                string email = txtUsuario.Text.Trim();
+                string senha = txtSenha.Text.Trim();
 
+                // =========================
+                // CAPTCHA
+                // =========================
                 string captcha = Request.Form["g-recaptcha-response"];
 
                 if (string.IsNullOrEmpty(captcha))
                 {
-                    Response.Write(
-                        "<script>alert('Confirme o captcha!');</script>"
-                    );
+                    Logger.Log("LOGIN_CAPTCHA_EMPTY", $"Tentativa sem captcha | Email: {email}");
+
+                    Response.Write("<script>alert('Confirme o captcha!');</script>");
                     return;
                 }
 
@@ -38,7 +42,7 @@ namespace PIM_3SEMESTRE.Pages.Login
                     "&response=" + captcha;
 
                 HttpWebRequest request =
-     (HttpWebRequest)WebRequest.Create(url);
+                    (HttpWebRequest)WebRequest.Create(url);
 
                 request.Method = "POST";
                 request.ContentLength = 0;
@@ -51,94 +55,83 @@ namespace PIM_3SEMESTRE.Pages.Login
                     {
                         string json = reader.ReadToEnd();
 
-                        JObject dadosCaptcha =
-                            JObject.Parse(json);
+                        JObject dadosCaptcha = JObject.Parse(json);
 
-                        bool sucesso =
-                            (bool)dadosCaptcha["success"];
+                        bool sucesso = (bool)dadosCaptcha["success"];
 
                         if (!sucesso)
                         {
-                            Response.Write(
-                                "<script>alert('Captcha inválido!');</script>"
-                            );
+                            Logger.Log("LOGIN_CAPTCHA_FAIL", $"Captcha inválido | Email: {email}");
+
+                            Response.Write("<script>alert('Captcha inválido!');</script>");
                             return;
                         }
                     }
                 }
 
-
-                string email = txtUsuario.Text.Trim();
-                string senha = txtSenha.Text.Trim();
-
+                // =========================
+                // LOGIN BANCO
+                // =========================
                 Banco bd = new Banco();
 
-                List<MySqlParameter> parametros =
-                    new List<MySqlParameter>();
-
-                parametros.Add(
-                    new MySqlParameter("p_email", email)
-                );
-
-                parametros.Add(
+                List<MySqlParameter> parametros = new List<MySqlParameter>
+                {
+                    new MySqlParameter("p_email", email),
                     new MySqlParameter("p_senha", senha)
-                );
+                };
 
                 using (MySqlDataReader dados =
                     bd.Consultar("sp_validar_login", parametros))
                 {
                     if (dados.Read())
                     {
-                        Session["id_usuario"] =
-                            dados["id_usuario"].ToString();
+                        Session["id_usuario"] = dados["id_usuario"].ToString();
+                        Session["nome_usuario"] = dados["nm_usuario"].ToString();
+                        Session["email_usuario"] = dados["nm_email_usuario"].ToString();
+                        Session["tipo_usuario"] = dados["nm_tipo_usuario"].ToString();
 
-                        Session["nome_usuario"] =
-                            dados["nm_usuario"].ToString();
+                        string tipoUsuario = Session["tipo_usuario"].ToString();
 
-                        Session["email_usuario"] =
-                            dados["nm_email_usuario"].ToString();
+                        Logger.Log("LOGIN_SUCCESS",
+                            $"Login OK | ID: {Session["id_usuario"]} | Email: {email} | Tipo: {tipoUsuario}");
 
-                        Session["tipo_usuario"] =
-                            dados["nm_tipo_usuario"].ToString();
+                        // =========================
+                        // REDIRECIONAMENTO (CORRIGIDO)
+                        // =========================
 
-                        string tipoUsuario =
-                            dados["nm_tipo_usuario"].ToString();
+                        string redirectUrl = "";
 
                         if (tipoUsuario == "Administrador")
-                        {
-                            Response.Redirect(
-                                "~/Pages/ADM/cadastrarfuncionario.aspx"
-                            );
-                        }
+                            redirectUrl = "~/Pages/ADM/cadastrarfuncionario.aspx";
                         else if (tipoUsuario == "Funcionario")
-                        {
-                            Response.Redirect(
-                                "~/Pages/Funcionario/cadastrarcliente.aspx"
-                            );
-                        }
+                            redirectUrl = "~/Pages/Funcionario/cadastrarcliente.aspx";
                         else if (tipoUsuario == "Mecanico")
-                        {
-                            Response.Redirect(
-                                "~/Pages/Mecanico/paginamecanico.aspx"
-                            );
-                        }
+                            redirectUrl = "~/Pages/Mecanico/paginamecanico.aspx";
                         else if (tipoUsuario == "Cliente")
-                        {
-                            Response.Redirect(
-                                "~/Pages/Cliente/historicocliente.aspx"
-                            );
-                        }
+                            redirectUrl = "~/Pages/Cliente/historicocliente.aspx";
+
+                        Response.Redirect(redirectUrl, false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                     else
                     {
-                        Response.Write(
-                            "<script>alert('E-mail ou senha inválidos!');</script>"
-                        );
+                        Logger.Log("LOGIN_FAIL", $"Email ou senha inválidos | Email: {email}");
+
+                        Response.Write("<script>alert('E-mail ou senha inválidos!');</script>");
+                        return;
                     }
                 }
             }
             catch (Exception ex)
             {
+                // evita log falso de ThreadAbortException
+                if (ex is System.Threading.ThreadAbortException)
+                    return;
+
+                Logger.Log("LOGIN_ERROR",
+                    $"Erro no login: {ex.Message} | Email: {txtUsuario.Text}");
+
                 Response.Write(
                     "<script>alert('Erro: " + ex.Message.Replace("'", "") + "');</script>"
                 );
